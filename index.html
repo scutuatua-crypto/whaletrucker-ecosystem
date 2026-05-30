@@ -3,399 +3,503 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WhaleTrucker Ecosystem V2</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<title>WhaleTrucker Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#03060f;--surface:#080d1c;--surface2:#0c1225;--border:#152040;--cyan:#00e5ff;--blue:#4d9fff;--violet:#9b6bff;--green:#00e87a;--orange:#ff7a35;--yellow:#ffd166;--white:#f0f8ff;--body:#b8d4f0;--muted:#4a6d90}
+:root{
+  --bg:#080a0f;
+  --bg2:#0d1117;
+  --bg3:#111620;
+  --border:#1e2a3a;
+  --border2:#243344;
+  --c:#00d4aa;
+  --cb:#3d9eff;
+  --cy:#f0c040;
+  --cr:#ff4d6d;
+  --cg:#00d4aa;
+  --text:#e8f0fe;
+  --muted:#4a6080;
+  --sub:#8aa0bc;
+}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;background:var(--bg)}
-body{background:var(--bg);color:var(--white);font-family:'DM Mono',monospace;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
-.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:1;filter:blur(100px);opacity:.06}
-.orb1{width:600px;height:600px;background:var(--cyan);top:-150px;left:-150px}
-.orb2{width:500px;height:500px;background:var(--violet);bottom:50px;right:-150px}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(3,6,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:16px;color:var(--cyan);text-decoration:none;letter-spacing:.1em}
-.nav-logo span{color:var(--green)}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.15em;text-transform:uppercase;transition:color .2s}
-.nav-links a:hover{color:var(--cyan)}
-.nav-pill{font-size:10px;padding:4px 12px;border:1px solid rgba(0,229,255,.3);color:var(--cyan);border-radius:20px;letter-spacing:.05em}
-#hero{position:relative;z-index:5;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 40px 80px;max-width:1200px;margin:0 auto}
-.hero-eye{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--green);margin-bottom:20px;display:flex;align-items:center;gap:10px;animation:fadeUp .6s ease both}
-.hero-eye::before{content:'';width:32px;height:1px;background:var(--green)}
-.hero-h1{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(44px,8vw,96px);line-height:.95;letter-spacing:-.02em;margin-bottom:28px;animation:fadeUp .6s .1s ease both}
-.hero-h1 .l1{color:var(--white)}
-.hero-h1 .l2{color:transparent;-webkit-text-stroke:1.5px var(--cyan)}
-.hero-h1 .hl{color:var(--cyan);-webkit-text-stroke:0}
-.hero-sub{max-width:540px;color:var(--muted);font-size:13px;line-height:1.9;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
-.hero-cta{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .6s .3s ease both}
-.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:var(--bg);font-family:'DM Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:13px 26px;border-radius:3px;text-decoration:none;transition:all .2s}
-.btn-p:hover{background:#fff;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,229,255,.3)}
-.btn-g{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);color:var(--body);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:13px 26px;border-radius:3px;text-decoration:none;transition:all .2s}
-.btn-g:hover{border-color:var(--cyan);color:var(--cyan)}
-.hero-stats{display:flex;gap:0;margin-top:60px;padding-top:32px;border-top:1px solid var(--border);animation:fadeUp .6s .4s ease both}
-.stat{padding-right:32px;margin-right:32px;border-right:1px solid var(--border)}
-.stat:last-child{border-right:none}
-.stat-n{font-family:'Orbitron',monospace;font-size:28px;font-weight:700;color:var(--cyan);line-height:1}
-.stat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.15em;margin-top:4px}
-.sec{position:relative;z-index:5;max-width:1200px;margin:0 auto;padding:80px 40px}
-.sec-label{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
-.sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(24px,3.5vw,42px);letter-spacing:-1px;margin-bottom:14px;color:var(--white)}
-.sec-desc{color:var(--muted);font-size:13px;line-height:1.8;max-width:520px;margin-bottom:48px}
-.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);position:relative;z-index:5;margin:0 40px}
-.arch-wrap{display:flex;flex-direction:column}
-.arch-layer{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start;padding:28px 32px;border:1px solid var(--border);position:relative;transition:border-color .3s,background .3s}
-.arch-layer:not(:last-child){border-bottom:none}
-.arch-layer:first-child{border-radius:8px 8px 0 0}
-.arch-layer:last-child{border-radius:0 0 8px 8px}
-.arch-layer:hover{border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.02)}
-.arch-layer::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
-.la::before{background:var(--green)}
-.lb::before{background:var(--blue)}
-.lc::before{background:var(--orange)}
-.layer-tag{font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px}
-.la .layer-tag{color:var(--green)}.lb .layer-tag{color:var(--blue)}.lc .layer-tag{color:var(--orange)}
-.layer-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:3px}
-.layer-sub{font-size:10px;color:var(--muted)}
-.nodes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.node{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:9px 14px;text-decoration:none;color:var(--body);font-size:11px;transition:all .2s}
-.node:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,229,255,.12)}
-.ndot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.la .ndot{background:var(--green)}.lb .ndot{background:var(--blue)}.lc .ndot{background:var(--orange)}
-.narr{font-size:9px;color:var(--muted)}
-.emap{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:32px;overflow-x:auto}
-.emap-top{display:flex;justify-content:center;margin-bottom:20px}
-.emap-box{background:var(--surface2);border:1px solid rgba(0,229,255,.4);border-radius:6px;padding:14px 28px;text-align:center;background:rgba(0,229,255,.05)}
-.emap-box .et{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--cyan)}
-.emap-box .es{font-size:10px;color:var(--muted);margin-top:3px}
-.emap-arr{display:flex;justify-content:center;height:28px;align-items:center;color:var(--muted);font-size:20px}
-.emap-hub{background:rgba(77,159,255,.08);border:1px solid rgba(77,159,255,.4);border-radius:6px;padding:20px;margin-bottom:12px}
-.emap-hub .ht{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--blue);margin-bottom:3px}
-.emap-hub .hs{font-size:10px;color:var(--muted);margin-bottom:12px}
-.hub-tags{display:flex;flex-wrap:wrap;gap:6px}
-.hub-tag{font-size:10px;padding:4px 10px;background:rgba(77,159,255,.1);border:1px solid rgba(77,159,255,.2);color:var(--blue);border-radius:3px}
-.emap-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.ecol{border-radius:6px;padding:18px 16px}
-.ecol.eg{background:rgba(0,232,122,.06);border:1px solid rgba(0,232,122,.3)}
-.ecol.eo{background:rgba(255,122,53,.06);border:1px solid rgba(255,122,53,.3)}
-.ecol.er{background:rgba(255,80,80,.06);border:1px solid rgba(255,80,80,.25)}
-.ecol .ct{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:3px}
-.eg .ct{color:var(--green)}.eo .ct{color:var(--orange)}.er .ct{color:#ff6060}
-.ecol .cs{font-size:9px;color:var(--muted);margin-bottom:10px}
-.ci{font-size:10px;color:var(--body);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.4}
-.ci:last-child{border-bottom:none}
-.ecap{text-align:center;margin-top:16px;font-size:10px;color:var(--muted);letter-spacing:.1em}
-.tier-hd{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.tier-pill{font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:4px 12px;border-radius:20px}
-.tp1{background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.3);color:var(--cyan)}
-.tp2{background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.3);color:var(--yellow)}
-.tier-lbl{font-family:'Syne',sans-serif;font-size:16px;font-weight:800}
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:40px}
-.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:22px;text-decoration:none;color:var(--white);display:block;position:relative;overflow:hidden;transition:all .25s}
-.proj-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .3s}
-.pt1::after{background:linear-gradient(90deg,var(--cyan),var(--blue))}
-.pt2::after{background:linear-gradient(90deg,var(--yellow),var(--orange))}
-.proj-card:hover{border-color:rgba(0,229,255,.3);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
-.proj-card:hover::after{opacity:1}
-.proj-icon{font-size:24px;margin-bottom:12px}
-.proj-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;margin-bottom:6px}
-.proj-desc{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:12px}
-.proj-tags{display:flex;flex-wrap:wrap;gap:5px}
-.ptag{font-size:9px;padding:2px 7px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);color:var(--muted)}
-.proj-arrow{position:absolute;top:18px;right:18px;font-size:14px;color:var(--muted);transition:color .2s}
-.proj-card:hover .proj-arrow{color:var(--cyan)}
-.connect-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.cc{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:28px;position:relative;overflow:hidden;transition:all .25s}
-.cc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--violet));opacity:0;transition:opacity .3s}
-.cc:hover{border-color:rgba(0,229,255,.2);background:var(--surface2)}
-.cc:hover::before{opacity:1}
-.cc h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
-.cc p{font-size:11px;color:var(--muted);line-height:1.8;margin-bottom:16px}
-.ep-block{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.ep-url{font-size:10px;color:var(--green);word-break:break-all}
-.copy-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;padding:5px 10px;border-radius:3px;cursor:pointer;white-space:nowrap;transition:all .2s;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;display:inline-flex;align-items:center}
-.copy-btn:hover{border-color:var(--cyan);color:var(--cyan)}
-.st-row{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--muted)}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospace;overflow-x:hidden;min-height:100vh}
+
+/* grid bg */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:60px 60px;opacity:.35;pointer-events:none;z-index:0
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:52px;
+  background:rgba(8,10,15,.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border)
+}
+.nav-logo{
+  font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;
+  color:var(--c);letter-spacing:.08em;text-decoration:none;
+  display:flex;align-items:center;gap:10px
+}
+.nav-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--c);animation:pulse 2s ease-in-out infinite}
+.nav-links{display:flex;gap:6px;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;font-size:10px;letter-spacing:.15em;
+  text-transform:uppercase;padding:6px 12px;border-radius:3px;
+  transition:all .2s;border:1px solid transparent
+}
+.nav-links a:hover{color:var(--c);border-color:var(--border2)}
+.nav-ticker{
+  font-size:10px;color:var(--sub);display:flex;gap:14px;align-items:center
+}
+.ticker-item{display:flex;gap:5px;align-items:center}
+.ticker-name{color:var(--muted)}
+.ticker-up{color:var(--cg)}
+.ticker-dn{color:var(--cr)}
+
+/* HERO */
+#hero{
+  position:relative;z-index:5;
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;padding:100px 48px 80px;
+  max-width:1100px;margin:0 auto
+}
+.hero-tag{
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--c);margin-bottom:24px;display:flex;align-items:center;gap:12px
+}
+.hero-tag::after{content:'';flex:1;height:1px;background:var(--border2);max-width:80px}
+.hero-h1{
+  font-family:'IBM Plex Sans',sans-serif;font-weight:300;
+  font-size:clamp(40px,7vw,88px);line-height:1;letter-spacing:-.03em;
+  margin-bottom:20px
+}
+.hero-h1 strong{font-weight:500;color:var(--c)}
+.hero-h1 em{font-style:normal;color:var(--cb)}
+.hero-rule{
+  font-size:12px;color:var(--sub);line-height:1.9;
+  max-width:520px;margin-bottom:40px;border-left:2px solid var(--border2);
+  padding-left:16px
+}
+.hero-rule b{color:var(--c);font-weight:500}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px}
+.btn-p{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+  padding:12px 24px;border-radius:2px;
+  background:var(--c);color:var(--bg);transition:all .2s
+}
+.btn-p:hover{background:#fff;transform:translateY(-1px)}
+.btn-g{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+  padding:12px 24px;border-radius:2px;
+  border:1px solid var(--border2);color:var(--sub);transition:all .2s
+}
+.btn-g:hover{border-color:var(--c);color:var(--c)}
+.stats-bar{
+  display:flex;gap:0;padding-top:32px;
+  border-top:1px solid var(--border)
+}
+.stat{padding:0 32px 0 0;margin-right:32px;border-right:1px solid var(--border)}
+.stat:last-child{border:none}
+.stat-n{font-size:32px;font-weight:600;color:var(--text);line-height:1}
+.stat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.2em;margin-top:4px}
+
+/* MARKET TICKER SECTION */
+#market{position:relative;z-index:5;padding:0;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.market-scroll{
+  display:flex;gap:0;
+  animation:scroll-left 30s linear infinite;
+  width:max-content
+}
+.market-scroll:hover{animation-play-state:paused}
+.m-item{
+  display:flex;align-items:center;gap:10px;padding:12px 28px;
+  border-right:1px solid var(--border);white-space:nowrap;min-width:180px
+}
+.m-symbol{font-size:11px;font-weight:600;color:var(--text)}
+.m-price{font-size:11px;color:var(--sub)}
+.m-chg{font-size:10px;padding:2px 6px;border-radius:2px}
+.m-up{background:rgba(0,212,170,.1);color:var(--cg)}
+.m-dn{background:rgba(255,77,109,.1);color:var(--cr)}
+
+/* ARCH SECTION */
+.sec{position:relative;z-index:5;max-width:1100px;margin:0 auto;padding:72px 48px}
+.sec-head{display:flex;align-items:center;gap:16px;margin-bottom:48px}
+.sec-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--c)}
+.sec-title{font-family:'IBM Plex Sans',sans-serif;font-weight:300;font-size:clamp(22px,3vw,36px);letter-spacing:-.02em}
+.sec-line{flex:1;height:1px;background:var(--border)}
+
+/* ARCH VISUAL */
+.arch-container{display:grid;grid-template-columns:1fr 2px 1fr;gap:0;align-items:start}
+.arch-col{display:flex;flex-direction:column;gap:12px}
+.arch-spine{background:var(--border2)}
+.arch-node{
+  background:var(--bg2);border:1px solid var(--border);
+  padding:20px 22px;position:relative;transition:border-color .2s;
+  cursor:default
+}
+.arch-node:hover{border-color:var(--border2)}
+.arch-node.main-node{border-color:var(--cb);border-left:3px solid var(--cb)}
+.arch-node.defi-node{border-color:var(--c);border-left:3px solid var(--c)}
+.arch-node-tag{font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px}
+.main-node .arch-node-tag{color:var(--cb)}
+.defi-node .arch-node-tag{color:var(--c)}
+.arch-node-name{font-size:15px;font-weight:500;margin-bottom:6px}
+.arch-node-sub{font-size:11px;color:var(--sub);line-height:1.7;margin-bottom:12px}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:9px;padding:3px 8px;border:1px solid var(--border2);color:var(--muted);letter-spacing:.05em}
+.chip-b{border-color:rgba(61,158,255,.3);color:var(--cb)}
+.chip-g{border-color:rgba(0,212,170,.3);color:var(--c)}
+
+/* PROJECTS */
+.divider{height:1px;background:var(--border);position:relative;z-index:5;margin:0 48px}
+.tier-label{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.tier-pill{font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px;border-radius:2px}
+.t1-pill{background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);color:var(--cg)}
+.t2-pill{background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.25);color:var(--cy)}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);margin-bottom:1px}
+.proj-card{
+  background:var(--bg2);padding:24px;text-decoration:none;
+  color:var(--text);display:block;position:relative;
+  transition:background .2s;overflow:hidden
+}
+.proj-card:hover{background:var(--bg3)}
+.proj-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--c);transform:scaleX(0);transition:transform .3s;transform-origin:left
+}
+.proj-card:hover::before{transform:scaleX(1)}
+.proj-icon{font-size:22px;margin-bottom:14px}
+.proj-name{font-size:14px;font-weight:500;margin-bottom:6px}
+.proj-desc{font-size:11px;color:var(--sub);line-height:1.7;margin-bottom:14px}
+.proj-meta{font-size:9px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.proj-arrow{position:absolute;top:20px;right:20px;font-size:12px;color:var(--muted)}
+.proj-card:hover .proj-arrow{color:var(--c)}
+.warn-bar{
+  background:rgba(240,192,64,.04);border:1px solid rgba(240,192,64,.12);
+  padding:8px 14px;font-size:10px;color:rgba(240,192,64,.6);
+  margin:0 0 20px;
+}
+
+/* CONNECT */
+.connect-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.cc{background:var(--bg2);padding:28px}
+.cc h3{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--c);margin-bottom:12px}
+.cc p{font-size:11px;color:var(--sub);line-height:1.8;margin-bottom:16px}
+.ep{
+  background:var(--bg);border:1px solid var(--border2);
+  padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:10px
+}
+.ep-url{font-size:10px;color:var(--cg);word-break:break-all}
+.copy-btn{
+  background:none;border:1px solid var(--border2);color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;font-size:9px;padding:4px 8px;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+  transition:all .2s;white-space:nowrap
+}
+.copy-btn:hover{border-color:var(--c);color:var(--c)}
+.status-row{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--muted)}
 .sdot{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite}
-.sg{background:var(--green);box-shadow:0 0 8px var(--green)}
-.sb{background:var(--blue);box-shadow:0 0 8px var(--blue)}
-.sv{background:var(--violet);box-shadow:0 0 8px var(--violet)}
-.code-block{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:14px;font-size:10px;color:var(--body);line-height:1.8;overflow-x:auto;white-space:pre}
-.ck{color:var(--blue)}.cu{color:var(--cyan)}
-.flow{display:grid;grid-template-columns:1fr 24px 1fr 24px 1fr 24px 1fr 24px 1fr 24px 1fr;overflow-x:auto}
-.fn{background:var(--surface);border:1px solid var(--border);border-top:2px solid;padding:18px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .25s}
-.fn:hover{background:var(--surface2);transform:translateY(-3px)}
-.fi{font-size:20px}.fs{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:.2em;opacity:.5}.fl{font-size:10px;line-height:1.4}
-.fp{border-top-color:var(--cyan);color:var(--cyan)}
-.fa{border-top-color:var(--green);color:var(--green)}
-.fe{border-top-color:var(--orange);color:var(--orange)}
-.fb{border-top-color:var(--blue);color:var(--blue)}
-.fc{border-top-color:var(--violet);color:var(--violet)}
-.fa-arr{display:flex;align-items:center;justify-content:center;color:var(--border);font-size:14px;background:var(--bg)}
-.fa-arr::before{content:'→'}
-footer{position:relative;z-index:5;border-top:1px solid var(--border);padding:40px;max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-.footer-logo{font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:var(--muted);letter-spacing:.1em}
+.sdot-g{background:var(--cg);box-shadow:0 0 0 2px rgba(0,212,170,.2)}
+.sdot-b{background:var(--cb);box-shadow:0 0 0 2px rgba(61,158,255,.2)}
+.sdot-y{background:var(--cy);box-shadow:0 0 0 2px rgba(240,192,64,.2)}
+.code-block{
+  background:var(--bg);border:1px solid var(--border);
+  padding:12px 14px;font-size:10px;color:var(--sub);
+  line-height:1.9;overflow-x:auto;white-space:pre
+}
+.ck{color:var(--cb)}.cu{color:var(--c)}
+
+/* LIVE MARKET PANEL */
+#live{position:relative;z-index:5;max-width:1100px;margin:0 auto;padding:72px 48px}
+.market-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border)}
+.m-card{
+  background:var(--bg2);padding:20px 22px;
+  position:relative;overflow:hidden;transition:background .2s
+}
+.m-card:hover{background:var(--bg3)}
+.m-name{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.m-val{font-size:22px;font-weight:600;color:var(--text);line-height:1;margin-bottom:4px;font-family:'IBM Plex Mono',monospace}
+.m-change{font-size:11px;display:flex;align-items:center;gap:6px}
+.up{color:var(--cg)}.dn{color:var(--cr)}
+.m-spark{
+  position:absolute;bottom:0;left:0;right:0;height:32px;opacity:.3
+}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:5;border-top:1px solid var(--border);
+  padding:32px 48px;display:flex;align-items:center;justify-content:space-between;
+  max-width:1100px;margin:0 auto
+}
+.footer-id{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.1em}
 .footer-copy{font-size:10px;color:var(--muted)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ANIMATIONS */
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
-.reveal.on{opacity:1;transform:translateY(0)}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-@media(max-width:768px){nav{padding:14px 20px}.nav-links,.nav-pill{display:none}.sec,#hero{padding-left:20px;padding-right:20px}.arch-layer{grid-template-columns:1fr}.connect-grid,.emap-cols{grid-template-columns:1fr}.hero-stats{flex-wrap:wrap}}
+@keyframes scroll-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tick{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.fade-in{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.fade-in.on{opacity:1;transform:none}
+
+#hero .hero-tag,#hero .hero-h1,#hero .hero-rule,#hero .cta-row,#hero .stats-bar{
+  animation:fadeUp .6s ease both
+}
+#hero .hero-h1{animation-delay:.08s}
+#hero .hero-rule{animation-delay:.16s}
+#hero .cta-row{animation-delay:.24s}
+#hero .stats-bar{animation-delay:.32s}
+
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .nav-links,.nav-ticker{display:none}
+  #hero,.sec,#live{padding-left:20px;padding-right:20px}
+  .arch-container{grid-template-columns:1fr}
+  .arch-spine{display:none}
+  .connect-grid{grid-template-columns:1fr}
+  .stats-bar{flex-wrap:wrap;gap:20px}
+  .stat{border:none;padding:0;margin:0}
+  footer{flex-direction:column;gap:8px;text-align:center;padding:24px 20px}
+  .divider{margin:0 20px}
+}
 </style>
 </head>
 <body>
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
 
+<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">Whale<span>Trucker</span></a>
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-dot"></span>
+    WT_ECOSYSTEM
+  </a>
   <ul class="nav-links">
-    <li><a href="#architecture">Architecture</a></li>
-    <li><a href="#ecosystem">Ecosystem</a></li>
+    <li><a href="#arch">Architecture</a></li>
+    <li><a href="#live">Market</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#connect">Connect</a></li>
   </ul>
-  <div class="nav-pill">V2 · 157 Tools · 8 Dimensions</div>
+  <div class="nav-ticker" id="nav-ticker">
+    <span style="color:var(--muted);font-size:9px">loading...</span>
+  </div>
 </nav>
+
+<!-- MARKET TICKER STRIP -->
+<div id="market">
+  <div class="market-scroll" id="ticker-strip">
+    <!-- duplicated for seamless loop -->
+  </div>
+</div>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-eye">WhaleTrucker Ecosystem V2 — Self-Aware · Self-Improving</div>
+  <div class="hero-tag">WhaleTrucker Ecosystem V2 — Self-aware · Self-improving</div>
   <h1 class="hero-h1">
-    <div class="l1">Self-Aware</div>
-    <div class="l2">Agentic <span class="hl">DeFi</span></div>
+    <strong>Self-aware</strong><br>
+    <em>agentic</em> DeFi<br>
+    command center
   </h1>
-  <p class="hero-sub">The world's first self-aware agentic DeFi MCP server. 157 tools across 8 dimensions — built, deployed, and managed from iPad. No PC required. 😤</p>
-  <div class="hero-cta">
-    <a href="#ecosystem" class="btn-p">↓ View Ecosystem</a>
+  <p class="hero-rule">
+    <b>github-mcp-server</b> as the backbone — full GitHub API control.<br>
+    <b>scutua-mcp</b> filling every gap GitHub can't — 157 DeFi tools.<br>
+    Built from iPad. Powered by Claude. $0 infrastructure.
+  </p>
+  <div class="cta-row">
+    <a href="#projects" class="btn-p">↓ View Projects</a>
     <a href="https://scutua-mcp.onrender.com/mcp" class="btn-g" target="_blank">MCP Endpoint →</a>
     <a href="https://github.com/scutuatua-crypto" class="btn-g" target="_blank">GitHub →</a>
   </div>
-  <div class="hero-stats">
-    <div class="stat"><div class="stat-n">157</div><div class="stat-l">MCP Tools</div></div>
-    <div class="stat"><div class="stat-n">8</div><div class="stat-l">Dimensions</div></div>
-    <div class="stat"><div class="stat-n">84</div><div class="stat-l">Smithery Score</div></div>
-    <div class="stat"><div class="stat-n">1.5K+</div><div class="stat-l">CI/CD Runs</div></div>
-    <div class="stat"><div class="stat-n">11</div><div class="stat-l">Chains</div></div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-n" id="s-tools">—</div><div class="stat-l">MCP Tools</div></div>
+    <div class="stat"><div class="stat-n" id="s-dims">—</div><div class="stat-l">Dimensions</div></div>
+    <div class="stat"><div class="stat-n" id="s-score">—</div><div class="stat-l">Smithery Score</div></div>
+    <div class="stat"><div class="stat-n" id="s-chains">—</div><div class="stat-l">Chains</div></div>
+    <div class="stat"><div class="stat-n">$0</div><div class="stat-l">Cost</div></div>
   </div>
 </section>
-
-<div class="divider"></div>
 
 <!-- ARCHITECTURE -->
-<section id="architecture" class="sec">
-  <div class="sec-label">// Architecture</div>
-  <h2 class="sec-title">3-Layer System Design</h2>
-  <p class="sec-desc">Every layer is interconnected. Click any node to visit its repo or live endpoint.</p>
-  <div class="arch-wrap reveal">
-    <div class="arch-layer la">
-      <div><div class="layer-tag">Layer 3 — Application</div><div class="layer-name">User Interfaces</div><div class="layer-sub">Dashboards · Docs · Hub</div></div>
-      <div class="nodes">
-        <a href="https://whaletrucker-ecosystem.pages.dev" class="node" target="_blank"><span class="ndot"></span>whaletrucker-ecosystem<span class="narr">↗</span></a>
-        <a href="https://assetflow-app-iota.vercel.app" class="node" target="_blank"><span class="ndot"></span>AssetFlow<span class="narr">↗</span></a>
-        <a href="https://asset-platform-iota.vercel.app" class="node" target="_blank"><span class="ndot"></span>Asset Platform<span class="narr">↗</span></a>
-        <a href="https://scutuatua-iorbh.wordpress.com" class="node" target="_blank"><span class="ndot"></span>Blog<span class="narr">↗</span></a>
-        <a href="https://t.me/scutua01" class="node" target="_blank"><span class="ndot"></span>Telegram<span class="narr">↗</span></a>
+<div class="divider"></div>
+<section id="arch" class="sec fade-in">
+  <div class="sec-head">
+    <span class="sec-label">// Architecture</span>
+    <div class="sec-line"></div>
+  </div>
+  <div class="arch-container">
+    <div class="arch-col">
+      <div class="arch-node main-node">
+        <div class="arch-node-tag">Main Hub · GitHub API</div>
+        <div class="arch-node-name">github-mcp-server</div>
+        <div class="arch-node-sub">Fork of GitHub's official MCP server. Full repo, issues, PRs, Actions, Security control — the backbone everything runs through. 848 commits from upstream.</div>
+        <div class="chip-row">
+          <span class="chip chip-b">Go · MIT</span>
+          <span class="chip chip-b">Repos · Issues · PRs</span>
+          <span class="chip chip-b">Actions · Security</span>
+          <span class="chip chip-b">Notifications</span>
+          <span class="chip chip-b">TypeScript wrapper</span>
+        </div>
       </div>
     </div>
-    <div class="arch-layer lb">
-      <div><div class="layer-tag">Layer 2 — Platform</div><div class="layer-name">MCP Servers</div><div class="layer-sub">Tools · Integrations · APIs</div></div>
-      <div class="nodes">
-        <a href="https://scutua-mcp.onrender.com/mcp" class="node" target="_blank"><span class="ndot"></span>scutua-mcp (157 tools)<span class="narr">↗</span></a>
-        <a href="https://github.com/scutuatua-crypto/github-mcp-server" class="node" target="_blank"><span class="ndot"></span>github-mcp-server<span class="narr">↗</span></a>
-        <a href="https://smithery.ai/servers/scutuatua/scutua-mcp" class="node" target="_blank"><span class="ndot"></span>Smithery<span class="narr">↗</span></a>
+    <div class="arch-spine"></div>
+    <div class="arch-col">
+      <div class="arch-node defi-node">
+        <div class="arch-node-tag">DeFi Layer · The part GitHub can't</div>
+        <div class="arch-node-name">scutua-mcp</div>
+        <div class="arch-node-sub">157 tools covering everything GitHub will never have. DeFi protocols, multi-chain data, whale analytics, swap execution, and ecosystem consciousness — all from one endpoint.</div>
+        <div class="chip-row">
+          <span class="chip chip-g">Python · Render</span>
+          <span class="chip chip-g">26 DeFi protocols</span>
+          <span class="chip chip-g">11 chains</span>
+          <span class="chip chip-g">Whale analytics</span>
+          <span class="chip chip-g">Swap · DCA · Sniper</span>
+          <span class="chip chip-g">Ecosystem consciousness</span>
+        </div>
       </div>
-    </div>
-    <div class="arch-layer lc">
-      <div><div class="layer-tag">Layer 1 — Infrastructure</div><div class="layer-name">Deploy & Hosting</div><div class="layer-sub">CI/CD · Cloud · Monitoring</div></div>
-      <div class="nodes">
-        <a href="https://github.com/scutuatua-crypto" class="node" target="_blank"><span class="ndot"></span>GitHub<span class="narr">↗</span></a>
-        <a href="https://pages.cloudflare.com" class="node" target="_blank"><span class="ndot"></span>Cloudflare Pages<span class="narr">↗</span></a>
-        <a href="https://render.com" class="node" target="_blank"><span class="ndot"></span>Render<span class="narr">↗</span></a>
-        <a href="https://vercel.com" class="node" target="_blank"><span class="ndot"></span>Vercel<span class="narr">↗</span></a>
+      <div class="arch-node" style="border-left:3px solid var(--muted)">
+        <div class="arch-node-tag" style="color:var(--muted)">Orchestrator</div>
+        <div class="arch-node-name" style="font-size:13px">You + Claude</div>
+        <div class="arch-node-sub">iPad only. No PC required. Design → Build → Deploy → Manage — all from one device. Controlling 82 repos from one device</div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- LIVE MARKET -->
 <div class="divider"></div>
-
-<!-- ECOSYSTEM MAP -->
-<section id="ecosystem" class="sec">
-  <div class="sec-label">// Ecosystem Map</div>
-  <h2 class="sec-title">Everything Connected</h2>
-  <p class="sec-desc">WhaleTrucker Ecosystem — self-aware, self-improving. Claude AI orchestrates everything.</p>
-  <div class="emap reveal">
-    <div class="emap-top">
-      <div class="emap-box"><div class="et">Claude AI</div><div class="es">Orchestrator / ผู้ใช้งาน</div></div>
-    </div>
-    <div class="emap-arr">↓</div>
-    <div class="emap-hub">
-      <div class="ht">github-mcp-server (main hub)</div>
-      <div class="hs">Go · MIT · fork of github/github-mcp-server · คุณ + Claude ควบคุม</div>
-      <div class="hub-tags">
-        <span class="hub-tag">Repos, Issues, PRs</span>
-        <span class="hub-tag">Actions, Security</span>
-        <span class="hub-tag">Notifications, Orgs</span>
-        <span class="hub-tag">Projects, Discussions</span>
-        <span class="hub-tag">TypeScript wrapper</span>
-      </div>
-    </div>
-    <div class="emap-arr">↓</div>
-    <div class="emap-cols">
-      <div class="ecol eg">
-        <div class="ct">scutua-mcp</div><div class="cs">Python · Render · 157 tools</div>
-        <div class="ci">DeFi protocols (26)</div>
-        <div class="ci">Multi-chain (11 chains)</div>
-        <div class="ci">Whale / analytics</div>
-        <div class="ci">Swap, DCA, sniper</div>
-        <div class="ci">Ecosystem consciousness</div>
-        <div class="ci" style="color:var(--green);font-size:9px;margin-top:6px">ส่วนที่ github ไม่มี = จุดแข็งของ ecosystem</div>
-      </div>
-      <div class="ecol eo">
-        <div class="ct">Codecov</div><div class="cs">ฟรี · quality gate</div>
-        <div class="ci">Coverage reports</div>
-        <div class="ci">PR checks</div>
-        <div class="ci">Trend tracking</div>
-        <div class="ci">Auto badge</div>
-        <div class="ci" style="color:var(--orange);font-size:9px;margin-top:6px">ทุก repo ใน ecosystem upload coverage อัตโนมัติ</div>
-      </div>
-      <div class="ecol er">
-        <div class="ct">คุณ + Claude</div><div class="cs">iPad only 😤</div>
-        <div class="ci">Design vision</div>
-        <div class="ci">Build tools</div>
-        <div class="ci">Deploy &amp; manage</div>
-        <div class="ci" style="color:#ff8080;font-size:9px;margin-top:6px">No PC required 🔥</div>
-      </div>
-    </div>
-    <div class="ecap">WhaleTrucker Ecosystem — self-aware, self-improving</div>
+<section id="live" class="sec fade-in">
+  <div class="sec-head">
+    <span class="sec-label">// Live Market</span>
+    <div class="sec-line"></div>
+    <span id="mkt-updated" style="font-size:9px;color:var(--muted)">updating...</span>
+  </div>
+  <div class="market-grid" id="market-grid">
+    <!-- populated by JS -->
   </div>
 </section>
-
-<div class="divider"></div>
-
-<!-- AGENTIC FLOW -->
-<section class="sec">
-  <div class="sec-label">// Agentic Flow</div>
-  <h2 class="sec-title">Get → Think → Act → Know</h2>
-  <div class="flow reveal">
-    <div class="fn fp"><div class="fi">📡</div><div class="fs">STEP 01</div><div class="fl">Market Data<br>Dim 1–5</div></div>
-    <div class="fa-arr"></div>
-    <div class="fn fa"><div class="fi">📈</div><div class="fs">STEP 02</div><div class="fl">Sentiment<br>BUY/SELL</div></div>
-    <div class="fa-arr"></div>
-    <div class="fn fp"><div class="fi">🧠</div><div class="fs">STEP 03</div><div class="fl">Claude AI<br>Decision</div></div>
-    <div class="fa-arr"></div>
-    <div class="fn fe"><div class="fi">⚡</div><div class="fs">STEP 04</div><div class="fl">Execute<br>Swap/DCA</div></div>
-    <div class="fa-arr"></div>
-    <div class="fn fb"><div class="fi">📱</div><div class="fs">STEP 05</div><div class="fl">Telegram<br>Alert</div></div>
-    <div class="fa-arr"></div>
-    <div class="fn fc"><div class="fi">🌌</div><div class="fs">STEP 06</div><div class="fl">Ecosystem<br>Conscious</div></div>
-  </div>
-</section>
-
-<div class="divider"></div>
 
 <!-- PROJECTS -->
-<section id="projects" class="sec">
-  <div class="sec-label">// Projects</div>
-  <h2 class="sec-title">All Projects</h2>
+<div class="divider"></div>
+<section id="projects" class="sec fade-in">
+  <div class="sec-head">
+    <span class="sec-label">// Projects</span>
+    <div class="sec-line"></div>
+  </div>
 
-  <div class="tier-hd">
-    <span class="tier-pill tp1">✅ Tier 1 · Core</span>
-    <span class="tier-lbl">Foundation — Safe</span>
+  <div class="tier-label">
+    <span class="tier-pill t1-pill">✓ Tier 1 · Safe</span>
+    <span style="font-size:11px;color:var(--muted)">Foundation — Read-only / no execution</span>
   </div>
   <div class="proj-grid">
-    <a href="https://scutua-mcp.onrender.com/mcp" class="proj-card pt1 reveal" target="_blank">
-      <span class="proj-arrow">↗</span><div class="proj-icon">🔌</div>
+    <a href="https://scutua-mcp.onrender.com/mcp" class="proj-card" target="_blank">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">🔌</div>
       <div class="proj-name">scutua-mcp</div>
-      <div class="proj-desc">Core MCP server — 157 tools, 8 dimensions. The intelligence backbone of the entire ecosystem.</div>
-      <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">FastMCP</span><span class="ptag">Render</span><span class="ptag">157 tools</span></div>
+      <div class="proj-desc">Core MCP server. 157 tools, 8 dimensions. The intelligence backbone of the entire ecosystem.</div>
+      <div class="proj-meta"><span>Python · FastMCP · Render</span></div>
     </a>
-    <a href="https://github.com/scutuatua-crypto/github-mcp-server" class="proj-card pt1 reveal" target="_blank">
-      <span class="proj-arrow">↗</span><div class="proj-icon">🐙</div>
+    <a href="https://github.com/scutuatua-crypto/github-mcp-server" class="proj-card" target="_blank">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">🐙</div>
       <div class="proj-name">github-mcp-server</div>
-      <div class="proj-desc">Fork of GitHub's official MCP server. Controls repos, issues, PRs, Actions — all via Claude.</div>
-      <div class="proj-tags"><span class="ptag">Go</span><span class="ptag">Fork</span><span class="ptag">GitHub API</span><span class="ptag">848 commits</span></div>
+      <div class="proj-desc">Fork of GitHub's official MCP server. Full repo, issue, PR, Actions control via Claude.</div>
+      <div class="proj-meta"><span>Go · Fork · 848 commits</span></div>
     </a>
-    <a href="https://whaletrucker-ecosystem.pages.dev" class="proj-card pt1 reveal" target="_blank">
-      <span class="proj-arrow">↗</span><div class="proj-icon">🌊</div>
+    <a href="https://whaletrucker-ecosystem.pages.dev" class="proj-card" target="_blank">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">🌊</div>
       <div class="proj-name">whaletrucker-ecosystem</div>
-      <div class="proj-desc">This hub — the central home linking every project, tool, and service in the ecosystem.</div>
-      <div class="proj-tags"><span class="ptag">HTML</span><span class="ptag">Cloudflare Pages</span></div>
+      <div class="proj-desc">This hub. Central home linking every project, tool, and service in the ecosystem.</div>
+      <div class="proj-meta"><span>HTML · Cloudflare Pages</span></div>
     </a>
-    <a href="https://scutuatua-iorbh.wordpress.com" class="proj-card pt1 reveal" target="_blank">
-      <span class="proj-arrow">↗</span><div class="proj-icon">📝</div>
+    <a href="https://smithery.ai/servers/scutuatua/scutua-mcp" class="proj-card" target="_blank">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">🏆</div>
+      <div class="proj-name">Smithery Registry</div>
+      <div class="proj-desc">Published on the Smithery MCP registry. Quality score 84/100. One-click install.</div>
+      <div class="proj-meta"><span>Registry · 84/100</span></div>
+    </a>
+    <a href="https://scutuatua-iorbh.wordpress.com" class="proj-card" target="_blank">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">📝</div>
       <div class="proj-name">Blog</div>
       <div class="proj-desc">Crypto insights, project updates, and ecosystem news from WhaleTrucker.</div>
-      <div class="proj-tags"><span class="ptag">WordPress</span><span class="ptag">Content</span></div>
+      <div class="proj-meta"><span>WordPress · Content</span></div>
     </a>
-    <a href="https://t.me/scutua01" class="proj-card pt1 reveal" target="_blank">
-      <span class="proj-arrow">↗</span><div class="proj-icon">✈️</div>
+    <a href="https://t.me/scutua01" class="proj-card" target="_blank">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">✈️</div>
       <div class="proj-name">Telegram</div>
       <div class="proj-desc">Community hub and live trade alerts. Every execution notified in real-time.</div>
-      <div class="proj-tags"><span class="ptag">Community</span><span class="ptag">Live Alerts</span></div>
-    </a>
-    <a href="https://smithery.ai/servers/scutuatua/scutua-mcp" class="proj-card pt1 reveal" target="_blank">
-      <span class="proj-arrow">↗</span><div class="proj-icon">🏆</div>
-      <div class="proj-name">Smithery Registry</div>
-      <div class="proj-desc">Published on the Smithery MCP registry. Quality score 84/100 — one-click install.</div>
-      <div class="proj-tags"><span class="ptag">Registry</span><span class="ptag">84/100</span></div>
+      <div class="proj-meta"><span>Community · Live Alerts</span></div>
     </a>
   </div>
 
-  <div style="background:rgba(255,209,102,.04);border:1px solid rgba(255,209,102,.15);border-radius:5px;padding:10px 14px;margin-bottom:16px;font-size:10px;color:#8a7040">
-    ⚠️ These projects involve live trading / execution. Always use a dedicated wallet. <strong style="color:var(--yellow)">Never use your main wallet.</strong>
-  </div>
-  <div class="tier-hd">
-    <span class="tier-pill tp2">⚠️ Tier 2 · Execution</span>
-    <span class="tier-lbl">Domain — Use Caution</span>
+  <div style="margin-top:32px"></div>
+  <div class="warn-bar">⚠ These projects involve live trading. Always use a dedicated wallet. Never use your main wallet.</div>
+  <div class="tier-label">
+    <span class="tier-pill t2-pill">⚠ Tier 2 · Caution</span>
+    <span style="font-size:11px;color:var(--muted)">Execution — Live trading / use dedicated wallet</span>
   </div>
   <div class="proj-grid">
-    <a href="#" class="proj-card pt2 reveal">
-      <span class="proj-arrow">↗</span><div class="proj-icon">🐋</div>
+    <a href="#" class="proj-card">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">🐋</div>
       <div class="proj-name">WhaleTrucker Elite</div>
-      <div class="proj-desc">Bitcoin command center — live price, portfolio valuation, DeFi radar, mission control.</div>
-      <div class="proj-tags"><span class="ptag">BTC</span><span class="ptag">Portfolio</span><span class="ptag">DeFi</span></div>
+      <div class="proj-desc">Bitcoin command center. Live price, portfolio valuation, DeFi radar, mission control.</div>
+      <div class="proj-meta"><span>BTC · Portfolio · DeFi</span></div>
     </a>
-    <a href="https://assetflow-app-iota.vercel.app" class="proj-card pt2 reveal" target="_blank">
-      <span class="proj-arrow">↗</span><div class="proj-icon">💼</div>
+    <a href="https://assetflow-app-iota.vercel.app" class="proj-card" target="_blank">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">💼</div>
       <div class="proj-name">AssetFlow</div>
       <div class="proj-desc">Asset management and portfolio tracker built on the scutua-mcp platform.</div>
-      <div class="proj-tags"><span class="ptag">Vercel</span><span class="ptag">Portfolio</span></div>
+      <div class="proj-meta"><span>Vercel · Portfolio</span></div>
     </a>
-    <a href="https://asset-platform-iota.vercel.app" class="proj-card pt2 reveal" target="_blank">
-      <span class="proj-arrow">↗</span><div class="proj-icon">📊</div>
+    <a href="https://asset-platform-iota.vercel.app" class="proj-card" target="_blank">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">📊</div>
       <div class="proj-name">Asset Platform</div>
       <div class="proj-desc">Advanced asset tracking and analytics with real-time data from 11 chains.</div>
-      <div class="proj-tags"><span class="ptag">Vercel</span><span class="ptag">Analytics</span></div>
+      <div class="proj-meta"><span>Vercel · Analytics · 11 chains</span></div>
     </a>
-    <a href="#" class="proj-card pt2 reveal">
-      <span class="proj-arrow">↗</span><div class="proj-icon">🌿</div>
+    <a href="https://scutuatua-crypto.github.io/whaletrucker-reef/" class="proj-card" target="_blank">
+      <span class="proj-arrow">↗</span>
+      <div class="proj-icon">🌿</div>
       <div class="proj-name">WhaleTrucker Reef</div>
-      <div class="proj-desc">DeFi Yield Hunter — finds the best APY for $500 across all supported protocols.</div>
-      <div class="proj-tags"><span class="ptag">DeFi</span><span class="ptag">Yield</span><span class="ptag">APY</span></div>
+      <div class="proj-desc">DeFi Yield Hunter. Finds the best APY for $500 across all supported protocols.</div>
+      <div class="proj-meta"><span>DeFi · Yield · APY</span></div>
     </a>
   </div>
 </section>
 
-<div class="divider"></div>
-
 <!-- CONNECT -->
-<section id="connect" class="sec">
-  <div class="sec-label">// Connect</div>
-  <h2 class="sec-title">Integrate in Seconds</h2>
-  <p class="sec-desc">Connect any Claude-compatible tool directly to the WhaleTrucker ecosystem.</p>
+<div class="divider"></div>
+<section id="connect" class="sec fade-in">
+  <div class="sec-head">
+    <span class="sec-label">// Connect</span>
+    <div class="sec-line"></div>
+  </div>
   <div class="connect-grid">
-    <div class="cc reveal">
+    <div class="cc">
       <h3>scutua-mcp Endpoint</h3>
       <p>Connect Claude, VS Code, Cursor, or any MCP-compatible tool directly to 157 tools.</p>
-      <div class="ep-block"><span class="ep-url">https://scutua-mcp.onrender.com/mcp</span><button class="copy-btn" onclick="cp(this,'https://scutua-mcp.onrender.com/mcp')">Copy</button></div>
-      <div class="st-row"><div class="sdot sg"></div><span>Live · Render · FastMCP 3.3.1</span></div>
+      <div class="ep">
+        <span class="ep-url">https://scutua-mcp.onrender.com/mcp</span>
+        <button class="copy-btn" onclick="cp(this,'https://scutua-mcp.onrender.com/mcp')">Copy</button>
+      </div>
+      <div class="status-row"><div class="sdot sdot-g"></div><span>Live · Render · FastMCP 3.3.1</span></div>
     </div>
-    <div class="cc reveal">
-      <h3>VS Code / Cursor</h3>
+    <div class="cc">
+      <h3>VS Code / Cursor Config</h3>
       <p>Add to your MCP settings file for instant access to all 157 tools.</p>
       <div class="code-block"><span class="ck">{
   "mcpServers"</span>: {
@@ -405,31 +509,168 @@ footer{position:relative;z-index:5;border-top:1px solid var(--border);padding:40
   }
 }</div>
     </div>
-    <div class="cc reveal">
+    <div class="cc">
       <h3>GitHub MCP Hub</h3>
-      <p>Fork of GitHub's official MCP server. Full repo, issue, PR, Actions, and security control.</p>
-      <div class="ep-block"><span class="ep-url">github.com/scutuatua-crypto/github-mcp-server</span><a href="https://github.com/scutuatua-crypto/github-mcp-server" class="copy-btn" target="_blank">Open →</a></div>
-      <div class="st-row"><div class="sdot sb"></div><span>Fork · Go · 848 commits</span></div>
+      <p>Fork of GitHub's official MCP. Full repo, issue, PR, Actions and security control.</p>
+      <div class="ep">
+        <span class="ep-url">github.com/scutuatua-crypto/github-mcp-server</span>
+        <a href="https://github.com/scutuatua-crypto/github-mcp-server" class="copy-btn" target="_blank">Open →</a>
+      </div>
+      <div class="status-row"><div class="sdot sdot-b"></div><span>Fork · Go · 848 commits</span></div>
     </div>
-    <div class="cc reveal">
+    <div class="cc">
       <h3>Smithery Registry</h3>
       <p>Discover and one-click install via the Smithery MCP registry.</p>
-      <div class="ep-block"><span class="ep-url">smithery.ai/servers/scutuatua/scutua-mcp</span><a href="https://smithery.ai/servers/scutuatua/scutua-mcp" class="copy-btn" target="_blank">Open →</a></div>
-      <div class="st-row"><div class="sdot sv"></div><span>Published · Score 84/100</span></div>
+      <div class="ep">
+        <span class="ep-url">smithery.ai/servers/scutuatua/scutua-mcp</span>
+        <a href="https://smithery.ai/servers/scutuatua/scutua-mcp" class="copy-btn" target="_blank">Open →</a>
+      </div>
+      <div class="status-row"><div class="sdot sdot-y"></div><span>Published · Score 84/100</span></div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-logo">WHALETRUCKER ECOSYSTEM V2</div>
-  <div class="footer-copy">"No Money, No Honey" 🚚 · Built on GitHub · Deployed from iPad 😤 · Powered by Claude 💙</div>
+  <div class="footer-id">WT_ECOSYSTEM V2 · You + Claude · iPad only</div>
+  <div class="footer-copy">"no money · no cry · just build" 🚚 · Powered by Claude 💙</div>
 </footer>
 
 <script>
-function cp(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';btn.style.borderColor='var(--green)';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='Copy';btn.style.borderColor='';btn.style.color=''},2000)})}
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:.08});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+// ── LIVE STATS from scutua-mcp ────────────────────────────────────────
+async function fetchStats(){
+  try{
+    const r=await fetch("https://scutua-mcp.onrender.com/mcp",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method:"tools/list",params:{}})});
+    if(!r.ok)throw new Error();
+    const d=await r.json();
+    const tools=d?.result?.tools;
+    if(tools&&tools.length){
+      animCount("s-tools",tools.length);
+      animCount("s-dims",8);
+      animCount("s-chains",11);
+    }
+  }catch(e){
+    animCount("s-tools",157);
+    animCount("s-dims",8);
+    animCount("s-chains",11);
+  }
+  animCount("s-score",84);
+}
+function animCount(id,target){
+  const el=document.getElementById(id);
+  if(!el)return;
+  let cur=0;const step=Math.ceil(target/40);
+  const t=setInterval(()=>{
+    cur=Math.min(cur+step,target);
+    el.textContent=cur;
+    if(cur>=target)clearInterval(t);
+  },30);
+}
+fetchStats();
+
+// ── CRYPTO PRICES via CoinGecko public API ──────────────────────────────
+const COINS=[
+  {id:'bitcoin',sym:'BTC'},
+  {id:'ethereum',sym:'ETH'},
+  {id:'solana',sym:'SOL'},
+  {id:'binancecoin',sym:'BNB'},
+  {id:'ripple',sym:'XRP'},
+  {id:'cardano',sym:'ADA'},
+  {id:'avalanche-2',sym:'AVAX'},
+  {id:'chainlink',sym:'LINK'},
+];
+
+let priceCache={};
+
+function fmt(n){
+  if(n>=1000)return '$'+n.toLocaleString('en',{maximumFractionDigits:0});
+  if(n>=1)return '$'+n.toFixed(2);
+  return '$'+n.toFixed(4);
+}
+function fmtChg(n){return(n>=0?'+':'')+n.toFixed(2)+'%'}
+
+async function fetchPrices(){
+  try{
+    const ids=COINS.map(c=>c.id).join(',');
+    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+    if(!r.ok)return;
+    const d=await r.json();
+    priceCache=d;
+    renderMarket(d);
+    renderTicker(d);
+    renderNavTicker(d);
+    const el=document.getElementById('mkt-updated');
+    if(el)el.textContent='updated '+new Date().toLocaleTimeString();
+  }catch(e){}
+}
+
+function renderMarket(d){
+  const g=document.getElementById('market-grid');
+  if(!g)return;
+  g.innerHTML=COINS.map(c=>{
+    const data=d[c.id];
+    if(!data)return '';
+    const p=data.usd,chg=data.usd_24h_change||0;
+    const up=chg>=0;
+    return `<div class="m-card">
+      <div class="m-name">${c.sym}/USD</div>
+      <div class="m-val" id="mv-${c.sym}">${fmt(p)}</div>
+      <div class="m-change ${up?'up':'dn'}">${up?'▲':'▼'} ${fmtChg(Math.abs(chg))} 24h</div>
+    </div>`;
+  }).join('');
+}
+
+function renderTicker(d){
+  const strip=document.getElementById('ticker-strip');
+  if(!strip)return;
+  const items=COINS.map(c=>{
+    const data=d[c.id];
+    if(!data)return '';
+    const p=data.usd,chg=data.usd_24h_change||0;
+    const up=chg>=0;
+    return `<div class="m-item">
+      <span class="m-symbol">${c.sym}</span>
+      <span class="m-price">${fmt(p)}</span>
+      <span class="m-chg ${up?'m-up':'m-dn'}">${up?'+':''}${chg.toFixed(2)}%</span>
+    </div>`;
+  }).join('');
+  strip.innerHTML=items+items; // duplicate for seamless loop
+}
+
+function renderNavTicker(d){
+  const el=document.getElementById('nav-ticker');
+  if(!el)return;
+  const show=COINS.slice(0,3);
+  el.innerHTML=show.map(c=>{
+    const data=d[c.id];
+    if(!data)return '';
+    const chg=data.usd_24h_change||0;
+    const up=chg>=0;
+    return `<span class="ticker-item">
+      <span class="ticker-name">${c.sym}</span>
+      <span class="${up?'ticker-up':'ticker-dn'}">${fmt(data.usd)}</span>
+    </span>`;
+  }).join('');
+}
+
+fetchPrices();
+setInterval(fetchPrices,60000);
+
+// ── COPY ──────────────────────────────────────────────────────────────────
+function cp(btn,text){
+  navigator.clipboard.writeText(text).then(()=>{
+    const orig=btn.textContent;
+    btn.textContent='Copied!';
+    btn.style.borderColor='var(--c)';
+    btn.style.color='var(--c)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.borderColor='';btn.style.color=''},2000);
+  });
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')});
+},{threshold:.06});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
-HTMLEOF

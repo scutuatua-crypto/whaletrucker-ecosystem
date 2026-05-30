@@ -3,1014 +3,433 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WhaleTrucker Ecosystem</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<title>WhaleTrucker Ecosystem V2</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #060a0f;
-    --surface: #0d1520;
-    --surface2: #111d2e;
-    --border: #1e3a5f;
-    --accent: #00d4ff;
-    --accent2: #0066ff;
-    --accent3: #00ff88;
-    --warn: #ff6b35;
-    --text: #e8f4fd;
-    --muted: #5a7fa0;
-    --font-head: 'Syne', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 14px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* ─── NOISE OVERLAY ─── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
-  }
-
-  /* ─── GRID LINES ─── */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 40px;
-    background: rgba(6,10,15,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    font-family: var(--font-head);
-    font-weight: 800;
-    font-size: 18px;
-    color: var(--accent);
-    letter-spacing: -0.5px;
-    text-decoration: none;
-  }
-
-  .nav-logo span { color: var(--accent3); }
-
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--accent); }
-
-  .nav-badge {
-    background: rgba(0,212,255,0.1);
-    border: 1px solid rgba(0,212,255,0.3);
-    color: var(--accent);
-    font-size: 11px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    letter-spacing: 0.05em;
-  }
-
-  /* ─── SECTIONS ─── */
-  section { position: relative; z-index: 1; }
-
-  /* ─── HERO ─── */
-  #hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 120px 40px 80px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .hero-eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--accent3);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    animation: fadeUp 0.6s ease both;
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    width: 40px;
-    height: 1px;
-    background: var(--accent3);
-  }
-
-  .hero-title {
-    font-family: var(--font-head);
-    font-weight: 800;
-    font-size: clamp(52px, 8vw, 100px);
-    line-height: 0.95;
-    letter-spacing: -3px;
-    margin-bottom: 32px;
-    animation: fadeUp 0.6s ease 0.1s both;
-  }
-
-  .hero-title .line1 { color: var(--text); }
-  .hero-title .line2 {
-    color: transparent;
-    -webkit-text-stroke: 1px var(--accent);
-  }
-  .hero-title .accent-word { color: var(--accent); }
-
-  .hero-desc {
-    max-width: 560px;
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.8;
-    margin-bottom: 48px;
-    animation: fadeUp 0.6s ease 0.2s both;
-  }
-
-  .hero-cta {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    animation: fadeUp 0.6s ease 0.3s both;
-  }
-
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--accent);
-    color: var(--bg);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 14px 28px;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .btn-primary:hover {
-    background: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,212,255,0.3);
-  }
-
-  .btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 14px 28px;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .btn-ghost:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  /* Animated whale */
-  .hero-visual {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.07;
-    pointer-events: none;
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .hero-visual svg { width: 500px; height: 500px; }
-
-  .hero-stats {
-    display: flex;
-    gap: 48px;
-    margin-top: 64px;
-    padding-top: 48px;
-    border-top: 1px solid var(--border);
-    animation: fadeUp 0.6s ease 0.4s both;
-  }
-
-  .stat-item {}
-
-  .stat-num {
-    font-family: var(--font-head);
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 4px;
-  }
-
-  /* ─── ARCHITECTURE ─── */
-  #architecture {
-    padding: 100px 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .section-title {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: clamp(28px, 4vw, 44px);
-    letter-spacing: -1.5px;
-    margin-bottom: 16px;
-  }
-
-  .section-desc {
-    color: var(--muted);
-    max-width: 520px;
-    margin-bottom: 60px;
-    line-height: 1.8;
-  }
-
-  /* 3-layer diagram */
-  .arch-diagram {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    position: relative;
-  }
-
-  .arch-layer {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 24px;
-    align-items: start;
-    padding: 32px;
-    border: 1px solid var(--border);
-    position: relative;
-    transition: border-color 0.3s;
-    cursor: pointer;
-  }
-
-  .arch-layer:not(:last-child) {
-    border-bottom: none;
-  }
-
-  .arch-layer:first-child { border-radius: 8px 8px 0 0; }
-  .arch-layer:last-child { border-radius: 0 0 8px 8px; }
-
-  .arch-layer:hover {
-    border-color: var(--accent2);
-    background: rgba(0,102,255,0.03);
-  }
-
-  .arch-layer::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    border-radius: 8px 0 0 8px;
-  }
-
-  .layer-infra::before { background: var(--warn); }
-  .layer-platform::before { background: var(--accent2); }
-  .layer-app::before { background: var(--accent3); }
-
-  .layer-meta {}
-
-  .layer-tag {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .layer-infra .layer-tag { color: var(--warn); }
-  .layer-platform .layer-tag { color: var(--accent2); }
-  .layer-app .layer-tag { color: var(--accent3); }
-
-  .layer-name {
-    font-family: var(--font-head);
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
-  }
-
-  .layer-count {
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .layer-nodes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .node {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 16px;
-    text-decoration: none;
-    color: var(--text);
-    font-size: 12px;
-    transition: all 0.2s;
-    position: relative;
-  }
-
-  .node:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0,212,255,0.15);
-  }
-
-  .node .node-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .layer-infra .node .node-dot { background: var(--warn); }
-  .layer-platform .node .node-dot { background: var(--accent2); }
-  .layer-app .node .node-dot { background: var(--accent3); }
-
-  .node-arrow {
-    font-size: 10px;
-    color: var(--muted);
-  }
-
-  /* connector lines */
-  .arch-connector {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 0;
-    position: relative;
-    z-index: 2;
-  }
-
-  /* ─── PROJECTS ─── */
-  #projects {
-    padding: 100px 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .tier-block { margin-bottom: 64px; }
-
-  .tier-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-
-  .tier-badge {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: 20px;
-  }
-
-  .tier1-badge {
-    background: rgba(0,212,255,0.1);
-    border: 1px solid rgba(0,212,255,0.3);
-    color: var(--accent);
-  }
-
-  .tier2-badge {
-    background: rgba(0,255,136,0.1);
-    border: 1px solid rgba(0,255,136,0.3);
-    color: var(--accent3);
-  }
-
-  .tier-title {
-    font-family: var(--font-head);
-    font-size: 18px;
-    font-weight: 700;
-  }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-  }
-
-  .project-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 24px;
-    text-decoration: none;
-    color: var(--text);
-    display: block;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .project-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .project-card:hover {
-    border-color: rgba(0,212,255,0.4);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-  }
-
-  .project-card:hover::before { opacity: 1; }
-
-  .project-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    margin-bottom: 16px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-  }
-
-  .project-name {
-    font-family: var(--font-head);
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    letter-spacing: -0.3px;
-  }
-
-  .project-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 16px;
-  }
-
-  .project-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .tag {
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 3px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  .project-link-icon {
-    position: absolute;
-    top: 20px; right: 20px;
-    font-size: 16px;
-    color: var(--muted);
-    transition: color 0.2s;
-  }
-
-  .project-card:hover .project-link-icon { color: var(--accent); }
-
-  /* ─── CONNECT ─── */
-  #connect {
-    padding: 100px 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .connect-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    margin-top: 48px;
-  }
-
-  .connect-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 32px;
-  }
-
-  .connect-card h3 {
-    font-family: var(--font-head);
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    letter-spacing: -0.3px;
-  }
-
-  .connect-card p {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 24px;
-    line-height: 1.8;
-  }
-
-  .endpoint-block {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .endpoint-url {
-    font-size: 11px;
-    color: var(--accent3);
-    word-break: break-all;
-  }
-
-  .copy-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .copy-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .status-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent3);
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-
-  .footer-logo {
-    font-family: var(--font-head);
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--muted);
-  }
-
-  .footer-copy {
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(-50%) translateX(0); }
-    50% { transform: translateY(-52%) translateX(-10px); }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  @keyframes scanline {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100vh); }
-  }
-
-  /* ─── SCROLLBAR ─── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  @media (max-width: 768px) {
-    nav { padding: 16px 20px; }
-    .nav-links, .nav-badge { display: none; }
-    #hero, #architecture, #projects, #connect { padding-left: 20px; padding-right: 20px; }
-    .hero-visual { display: none; }
-    .hero-stats { gap: 24px; flex-wrap: wrap; }
-    .arch-layer { grid-template-columns: 1fr; }
-    .connect-grid { grid-template-columns: 1fr; }
-  }
+:root{--bg:#03060f;--surface:#080d1c;--surface2:#0c1225;--border:#152040;--cyan:#00e5ff;--blue:#4d9fff;--violet:#9b6bff;--green:#00e87a;--orange:#ff7a35;--yellow:#ffd166;--white:#f0f8ff;--body:#b8d4f0;--muted:#4a6d90}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--white);font-family:'DM Mono',monospace;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:1;filter:blur(100px);opacity:.06}
+.orb1{width:600px;height:600px;background:var(--cyan);top:-150px;left:-150px}
+.orb2{width:500px;height:500px;background:var(--violet);bottom:50px;right:-150px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(3,6,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:16px;color:var(--cyan);text-decoration:none;letter-spacing:.1em}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.15em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-pill{font-size:10px;padding:4px 12px;border:1px solid rgba(0,229,255,.3);color:var(--cyan);border-radius:20px;letter-spacing:.05em}
+#hero{position:relative;z-index:5;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 40px 80px;max-width:1200px;margin:0 auto}
+.hero-eye{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--green);margin-bottom:20px;display:flex;align-items:center;gap:10px;animation:fadeUp .6s ease both}
+.hero-eye::before{content:'';width:32px;height:1px;background:var(--green)}
+.hero-h1{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(44px,8vw,96px);line-height:.95;letter-spacing:-.02em;margin-bottom:28px;animation:fadeUp .6s .1s ease both}
+.hero-h1 .l1{color:var(--white)}
+.hero-h1 .l2{color:transparent;-webkit-text-stroke:1.5px var(--cyan)}
+.hero-h1 .hl{color:var(--cyan);-webkit-text-stroke:0}
+.hero-sub{max-width:540px;color:var(--muted);font-size:13px;line-height:1.9;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .6s .3s ease both}
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:var(--bg);font-family:'DM Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:13px 26px;border-radius:3px;text-decoration:none;transition:all .2s}
+.btn-p:hover{background:#fff;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,229,255,.3)}
+.btn-g{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);color:var(--body);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:13px 26px;border-radius:3px;text-decoration:none;transition:all .2s}
+.btn-g:hover{border-color:var(--cyan);color:var(--cyan)}
+.hero-stats{display:flex;gap:0;margin-top:60px;padding-top:32px;border-top:1px solid var(--border);animation:fadeUp .6s .4s ease both}
+.stat{padding-right:32px;margin-right:32px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:'Orbitron',monospace;font-size:28px;font-weight:700;color:var(--cyan);line-height:1}
+.stat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.15em;margin-top:4px}
+.sec{position:relative;z-index:5;max-width:1200px;margin:0 auto;padding:80px 40px}
+.sec-label{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
+.sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(24px,3.5vw,42px);letter-spacing:-1px;margin-bottom:14px;color:var(--white)}
+.sec-desc{color:var(--muted);font-size:13px;line-height:1.8;max-width:520px;margin-bottom:48px}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);position:relative;z-index:5;margin:0 40px}
+.arch-wrap{display:flex;flex-direction:column}
+.arch-layer{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start;padding:28px 32px;border:1px solid var(--border);position:relative;transition:border-color .3s,background .3s}
+.arch-layer:not(:last-child){border-bottom:none}
+.arch-layer:first-child{border-radius:8px 8px 0 0}
+.arch-layer:last-child{border-radius:0 0 8px 8px}
+.arch-layer:hover{border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.02)}
+.arch-layer::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.la::before{background:var(--green)}
+.lb::before{background:var(--blue)}
+.lc::before{background:var(--orange)}
+.layer-tag{font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px}
+.la .layer-tag{color:var(--green)}.lb .layer-tag{color:var(--blue)}.lc .layer-tag{color:var(--orange)}
+.layer-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:3px}
+.layer-sub{font-size:10px;color:var(--muted)}
+.nodes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.node{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:9px 14px;text-decoration:none;color:var(--body);font-size:11px;transition:all .2s}
+.node:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,229,255,.12)}
+.ndot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.la .ndot{background:var(--green)}.lb .ndot{background:var(--blue)}.lc .ndot{background:var(--orange)}
+.narr{font-size:9px;color:var(--muted)}
+.emap{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:32px;overflow-x:auto}
+.emap-top{display:flex;justify-content:center;margin-bottom:20px}
+.emap-box{background:var(--surface2);border:1px solid rgba(0,229,255,.4);border-radius:6px;padding:14px 28px;text-align:center;background:rgba(0,229,255,.05)}
+.emap-box .et{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--cyan)}
+.emap-box .es{font-size:10px;color:var(--muted);margin-top:3px}
+.emap-arr{display:flex;justify-content:center;height:28px;align-items:center;color:var(--muted);font-size:20px}
+.emap-hub{background:rgba(77,159,255,.08);border:1px solid rgba(77,159,255,.4);border-radius:6px;padding:20px;margin-bottom:12px}
+.emap-hub .ht{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--blue);margin-bottom:3px}
+.emap-hub .hs{font-size:10px;color:var(--muted);margin-bottom:12px}
+.hub-tags{display:flex;flex-wrap:wrap;gap:6px}
+.hub-tag{font-size:10px;padding:4px 10px;background:rgba(77,159,255,.1);border:1px solid rgba(77,159,255,.2);color:var(--blue);border-radius:3px}
+.emap-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.ecol{border-radius:6px;padding:18px 16px}
+.ecol.eg{background:rgba(0,232,122,.06);border:1px solid rgba(0,232,122,.3)}
+.ecol.eo{background:rgba(255,122,53,.06);border:1px solid rgba(255,122,53,.3)}
+.ecol.er{background:rgba(255,80,80,.06);border:1px solid rgba(255,80,80,.25)}
+.ecol .ct{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:3px}
+.eg .ct{color:var(--green)}.eo .ct{color:var(--orange)}.er .ct{color:#ff6060}
+.ecol .cs{font-size:9px;color:var(--muted);margin-bottom:10px}
+.ci{font-size:10px;color:var(--body);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.4}
+.ci:last-child{border-bottom:none}
+.ecap{text-align:center;margin-top:16px;font-size:10px;color:var(--muted);letter-spacing:.1em}
+.tier-hd{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.tier-pill{font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+.tp1{background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.3);color:var(--cyan)}
+.tp2{background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.3);color:var(--yellow)}
+.tier-lbl{font-family:'Syne',sans-serif;font-size:16px;font-weight:800}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:40px}
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:22px;text-decoration:none;color:var(--white);display:block;position:relative;overflow:hidden;transition:all .25s}
+.proj-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .3s}
+.pt1::after{background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.pt2::after{background:linear-gradient(90deg,var(--yellow),var(--orange))}
+.proj-card:hover{border-color:rgba(0,229,255,.3);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.proj-card:hover::after{opacity:1}
+.proj-icon{font-size:24px;margin-bottom:12px}
+.proj-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;margin-bottom:6px}
+.proj-desc{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:12px}
+.proj-tags{display:flex;flex-wrap:wrap;gap:5px}
+.ptag{font-size:9px;padding:2px 7px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);color:var(--muted)}
+.proj-arrow{position:absolute;top:18px;right:18px;font-size:14px;color:var(--muted);transition:color .2s}
+.proj-card:hover .proj-arrow{color:var(--cyan)}
+.connect-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cc{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:28px;position:relative;overflow:hidden;transition:all .25s}
+.cc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--violet));opacity:0;transition:opacity .3s}
+.cc:hover{border-color:rgba(0,229,255,.2);background:var(--surface2)}
+.cc:hover::before{opacity:1}
+.cc h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
+.cc p{font-size:11px;color:var(--muted);line-height:1.8;margin-bottom:16px}
+.ep-block{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.ep-url{font-size:10px;color:var(--green);word-break:break-all}
+.copy-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;padding:5px 10px;border-radius:3px;cursor:pointer;white-space:nowrap;transition:all .2s;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;display:inline-flex;align-items:center}
+.copy-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.st-row{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--muted)}
+.sdot{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite}
+.sg{background:var(--green);box-shadow:0 0 8px var(--green)}
+.sb{background:var(--blue);box-shadow:0 0 8px var(--blue)}
+.sv{background:var(--violet);box-shadow:0 0 8px var(--violet)}
+.code-block{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:14px;font-size:10px;color:var(--body);line-height:1.8;overflow-x:auto;white-space:pre}
+.ck{color:var(--blue)}.cu{color:var(--cyan)}
+.flow{display:grid;grid-template-columns:1fr 24px 1fr 24px 1fr 24px 1fr 24px 1fr 24px 1fr;overflow-x:auto}
+.fn{background:var(--surface);border:1px solid var(--border);border-top:2px solid;padding:18px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .25s}
+.fn:hover{background:var(--surface2);transform:translateY(-3px)}
+.fi{font-size:20px}.fs{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:.2em;opacity:.5}.fl{font-size:10px;line-height:1.4}
+.fp{border-top-color:var(--cyan);color:var(--cyan)}
+.fa{border-top-color:var(--green);color:var(--green)}
+.fe{border-top-color:var(--orange);color:var(--orange)}
+.fb{border-top-color:var(--blue);color:var(--blue)}
+.fc{border-top-color:var(--violet);color:var(--violet)}
+.fa-arr{display:flex;align-items:center;justify-content:center;color:var(--border);font-size:14px;background:var(--bg)}
+.fa-arr::before{content:'→'}
+footer{position:relative;z-index:5;border-top:1px solid var(--border);padding:40px;max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:var(--muted);letter-spacing:.1em}
+.footer-copy{font-size:10px;color:var(--muted)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.reveal.on{opacity:1;transform:translateY(0)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:768px){nav{padding:14px 20px}.nav-links,.nav-pill{display:none}.sec,#hero{padding-left:20px;padding-right:20px}.arch-layer{grid-template-columns:1fr}.connect-grid,.emap-cols{grid-template-columns:1fr}.hero-stats{flex-wrap:wrap}}
 </style>
 </head>
 <body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
 
-<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">Whale<span>Trucker</span></a>
   <ul class="nav-links">
     <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#ecosystem">Ecosystem</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#connect">Connect</a></li>
   </ul>
-  <div class="nav-badge">v1.0 · Ecosystem</div>
+  <div class="nav-pill">V2 · 157 Tools · 8 Dimensions</div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-eyebrow">WhaleTrucker Ecosystem</div>
-  <h1 class="hero-title">
-    <div class="line1">Move Data</div>
-    <div class="line2">Like a <span class="accent-word" style="-webkit-text-stroke:0">Whale</span></div>
+  <div class="hero-eye">WhaleTrucker Ecosystem V2 — Self-Aware · Self-Improving</div>
+  <h1 class="hero-h1">
+    <div class="l1">Self-Aware</div>
+    <div class="l2">Agentic <span class="hl">DeFi</span></div>
   </h1>
-  <p class="hero-desc">
-    A unified ecosystem for building, deploying, and connecting intelligent trucking infrastructure. From MCP servers to auth layers — everything linked, everything live.
-  </p>
+  <p class="hero-sub">The world's first self-aware agentic DeFi MCP server. 157 tools across 8 dimensions — built, deployed, and managed from iPad. No PC required. 😤</p>
   <div class="hero-cta">
-    <a href="#architecture" class="btn-primary">↓ Explore Architecture</a>
-    <a href="#connect" class="btn-ghost">Connect via MCP →</a>
+    <a href="#ecosystem" class="btn-p">↓ View Ecosystem</a>
+    <a href="https://scutua-mcp.onrender.com/mcp" class="btn-g" target="_blank">MCP Endpoint →</a>
+    <a href="https://github.com/scutuatua-crypto" class="btn-g" target="_blank">GitHub →</a>
   </div>
   <div class="hero-stats">
-    <div class="stat-item">
-      <div class="stat-num">3</div>
-      <div class="stat-label">Arch Layers</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">2</div>
-      <div class="stat-label">Project Tiers</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">1</div>
-      <div class="stat-label">MCP Endpoint</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">∞</div>
-      <div class="stat-label">Possibilities</div>
-    </div>
-  </div>
-
-  <!-- Decorative whale SVG -->
-  <div class="hero-visual">
-    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M80 280 C80 180 160 100 260 100 C360 100 440 160 450 250 C460 320 410 380 340 400 C300 412 260 405 230 420 C200 435 190 460 160 450 C120 436 100 400 90 370 C82 348 80 314 80 280Z" fill="#00d4ff"/>
-      <path d="M80 280 C60 300 40 320 20 310 C10 305 15 285 30 275 C50 262 70 268 80 280Z" fill="#00d4ff"/>
-      <circle cx="340" cy="180" r="12" fill="#060a0f"/>
-    </svg>
+    <div class="stat"><div class="stat-n">157</div><div class="stat-l">MCP Tools</div></div>
+    <div class="stat"><div class="stat-n">8</div><div class="stat-l">Dimensions</div></div>
+    <div class="stat"><div class="stat-n">84</div><div class="stat-l">Smithery Score</div></div>
+    <div class="stat"><div class="stat-n">1.5K+</div><div class="stat-l">CI/CD Runs</div></div>
+    <div class="stat"><div class="stat-n">11</div><div class="stat-l">Chains</div></div>
   </div>
 </section>
+
+<div class="divider"></div>
 
 <!-- ARCHITECTURE -->
-<section id="architecture">
-  <div class="section-label">Layer Architecture</div>
-  <h2 class="section-title">3-Layer System Design</h2>
-  <p class="section-desc">Each component is interconnected. Click any node to navigate to its documentation or repository.</p>
-
-  <div class="arch-diagram">
-
-    <!-- Layer 1: Application -->
-    <div class="arch-layer layer-app">
-      <div class="layer-meta">
-        <div class="layer-tag">Layer 3</div>
-        <div class="layer-name">Application</div>
-        <div class="layer-count">User-facing interfaces</div>
-      </div>
-      <div class="layer-nodes">
-        <a href="https://whaletrucker-ecosystem.pages.dev" class="node" target="_blank">
-          <span class="node-dot"></span>whaletrucker-ecosystem
-          <span class="node-arrow">↗</span>
-        </a>
-        <a href="#" class="node" target="_blank">
-          <span class="node-dot"></span>auth-wiki
-          <span class="node-arrow">↗</span>
-        </a>
-        <a href="#" class="node" target="_blank">
-          <span class="node-dot"></span>dashboard
-          <span class="node-arrow">↗</span>
-        </a>
+<section id="architecture" class="sec">
+  <div class="sec-label">// Architecture</div>
+  <h2 class="sec-title">3-Layer System Design</h2>
+  <p class="sec-desc">Every layer is interconnected. Click any node to visit its repo or live endpoint.</p>
+  <div class="arch-wrap reveal">
+    <div class="arch-layer la">
+      <div><div class="layer-tag">Layer 3 — Application</div><div class="layer-name">User Interfaces</div><div class="layer-sub">Dashboards · Docs · Hub</div></div>
+      <div class="nodes">
+        <a href="https://whaletrucker-ecosystem.pages.dev" class="node" target="_blank"><span class="ndot"></span>whaletrucker-ecosystem<span class="narr">↗</span></a>
+        <a href="https://assetflow-app-iota.vercel.app" class="node" target="_blank"><span class="ndot"></span>AssetFlow<span class="narr">↗</span></a>
+        <a href="https://asset-platform-iota.vercel.app" class="node" target="_blank"><span class="ndot"></span>Asset Platform<span class="narr">↗</span></a>
+        <a href="https://scutuatua-iorbh.wordpress.com" class="node" target="_blank"><span class="ndot"></span>Blog<span class="narr">↗</span></a>
+        <a href="https://t.me/scutua01" class="node" target="_blank"><span class="ndot"></span>Telegram<span class="narr">↗</span></a>
       </div>
     </div>
-
-    <!-- Layer 2: Platform -->
-    <div class="arch-layer layer-platform">
-      <div class="layer-meta">
-        <div class="layer-tag">Layer 2</div>
-        <div class="layer-name">Platform</div>
-        <div class="layer-count">Integration & tools</div>
-      </div>
-      <div class="layer-nodes">
-        <a href="https://scutua-mcp.onrender.com/mcp" class="node" target="_blank">
-          <span class="node-dot"></span>scutua-mcp
-          <span class="node-arrow">↗</span>
-        </a>
-        <a href="#" class="node" target="_blank">
-          <span class="node-dot"></span>claude-integration
-          <span class="node-arrow">↗</span>
-        </a>
-        <a href="#" class="node" target="_blank">
-          <span class="node-dot"></span>workflow-engine
-          <span class="node-arrow">↗</span>
-        </a>
+    <div class="arch-layer lb">
+      <div><div class="layer-tag">Layer 2 — Platform</div><div class="layer-name">MCP Servers</div><div class="layer-sub">Tools · Integrations · APIs</div></div>
+      <div class="nodes">
+        <a href="https://scutua-mcp.onrender.com/mcp" class="node" target="_blank"><span class="ndot"></span>scutua-mcp (157 tools)<span class="narr">↗</span></a>
+        <a href="https://github.com/scutuatua-crypto/github-mcp-server" class="node" target="_blank"><span class="ndot"></span>github-mcp-server<span class="narr">↗</span></a>
+        <a href="https://smithery.ai/servers/scutuatua/scutua-mcp" class="node" target="_blank"><span class="ndot"></span>Smithery<span class="narr">↗</span></a>
       </div>
     </div>
-
-    <!-- Layer 3: Infrastructure -->
-    <div class="arch-layer layer-infra">
-      <div class="layer-meta">
-        <div class="layer-tag">Layer 1</div>
-        <div class="layer-name">Infrastructure</div>
-        <div class="layer-count">Deploy & hosting</div>
-      </div>
-      <div class="layer-nodes">
-        <a href="https://github.com" class="node" target="_blank">
-          <span class="node-dot"></span>GitHub
-          <span class="node-arrow">↗</span>
-        </a>
-        <a href="https://pages.cloudflare.com" class="node" target="_blank">
-          <span class="node-dot"></span>Cloudflare Pages
-          <span class="node-arrow">↗</span>
-        </a>
-        <a href="https://render.com" class="node" target="_blank">
-          <span class="node-dot"></span>Render
-          <span class="node-arrow">↗</span>
-        </a>
+    <div class="arch-layer lc">
+      <div><div class="layer-tag">Layer 1 — Infrastructure</div><div class="layer-name">Deploy & Hosting</div><div class="layer-sub">CI/CD · Cloud · Monitoring</div></div>
+      <div class="nodes">
+        <a href="https://github.com/scutuatua-crypto" class="node" target="_blank"><span class="ndot"></span>GitHub<span class="narr">↗</span></a>
+        <a href="https://pages.cloudflare.com" class="node" target="_blank"><span class="ndot"></span>Cloudflare Pages<span class="narr">↗</span></a>
+        <a href="https://render.com" class="node" target="_blank"><span class="ndot"></span>Render<span class="narr">↗</span></a>
+        <a href="https://vercel.com" class="node" target="_blank"><span class="ndot"></span>Vercel<span class="narr">↗</span></a>
       </div>
     </div>
-
   </div>
 </section>
+
+<div class="divider"></div>
+
+<!-- ECOSYSTEM MAP -->
+<section id="ecosystem" class="sec">
+  <div class="sec-label">// Ecosystem Map</div>
+  <h2 class="sec-title">Everything Connected</h2>
+  <p class="sec-desc">WhaleTrucker Ecosystem — self-aware, self-improving. Claude AI orchestrates everything.</p>
+  <div class="emap reveal">
+    <div class="emap-top">
+      <div class="emap-box"><div class="et">Claude AI</div><div class="es">Orchestrator / ผู้ใช้งาน</div></div>
+    </div>
+    <div class="emap-arr">↓</div>
+    <div class="emap-hub">
+      <div class="ht">github-mcp-server (main hub)</div>
+      <div class="hs">Go · MIT · fork of github/github-mcp-server · คุณ + Claude ควบคุม</div>
+      <div class="hub-tags">
+        <span class="hub-tag">Repos, Issues, PRs</span>
+        <span class="hub-tag">Actions, Security</span>
+        <span class="hub-tag">Notifications, Orgs</span>
+        <span class="hub-tag">Projects, Discussions</span>
+        <span class="hub-tag">TypeScript wrapper</span>
+      </div>
+    </div>
+    <div class="emap-arr">↓</div>
+    <div class="emap-cols">
+      <div class="ecol eg">
+        <div class="ct">scutua-mcp</div><div class="cs">Python · Render · 157 tools</div>
+        <div class="ci">DeFi protocols (26)</div>
+        <div class="ci">Multi-chain (11 chains)</div>
+        <div class="ci">Whale / analytics</div>
+        <div class="ci">Swap, DCA, sniper</div>
+        <div class="ci">Ecosystem consciousness</div>
+        <div class="ci" style="color:var(--green);font-size:9px;margin-top:6px">ส่วนที่ github ไม่มี = จุดแข็งของ ecosystem</div>
+      </div>
+      <div class="ecol eo">
+        <div class="ct">Codecov</div><div class="cs">ฟรี · quality gate</div>
+        <div class="ci">Coverage reports</div>
+        <div class="ci">PR checks</div>
+        <div class="ci">Trend tracking</div>
+        <div class="ci">Auto badge</div>
+        <div class="ci" style="color:var(--orange);font-size:9px;margin-top:6px">ทุก repo ใน ecosystem upload coverage อัตโนมัติ</div>
+      </div>
+      <div class="ecol er">
+        <div class="ct">คุณ + Claude</div><div class="cs">iPad only 😤</div>
+        <div class="ci">Design vision</div>
+        <div class="ci">Build tools</div>
+        <div class="ci">Deploy &amp; manage</div>
+        <div class="ci" style="color:#ff8080;font-size:9px;margin-top:6px">No PC required 🔥</div>
+      </div>
+    </div>
+    <div class="ecap">WhaleTrucker Ecosystem — self-aware, self-improving</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- AGENTIC FLOW -->
+<section class="sec">
+  <div class="sec-label">// Agentic Flow</div>
+  <h2 class="sec-title">Get → Think → Act → Know</h2>
+  <div class="flow reveal">
+    <div class="fn fp"><div class="fi">📡</div><div class="fs">STEP 01</div><div class="fl">Market Data<br>Dim 1–5</div></div>
+    <div class="fa-arr"></div>
+    <div class="fn fa"><div class="fi">📈</div><div class="fs">STEP 02</div><div class="fl">Sentiment<br>BUY/SELL</div></div>
+    <div class="fa-arr"></div>
+    <div class="fn fp"><div class="fi">🧠</div><div class="fs">STEP 03</div><div class="fl">Claude AI<br>Decision</div></div>
+    <div class="fa-arr"></div>
+    <div class="fn fe"><div class="fi">⚡</div><div class="fs">STEP 04</div><div class="fl">Execute<br>Swap/DCA</div></div>
+    <div class="fa-arr"></div>
+    <div class="fn fb"><div class="fi">📱</div><div class="fs">STEP 05</div><div class="fl">Telegram<br>Alert</div></div>
+    <div class="fa-arr"></div>
+    <div class="fn fc"><div class="fi">🌌</div><div class="fs">STEP 06</div><div class="fl">Ecosystem<br>Conscious</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
 
 <!-- PROJECTS -->
-<section id="projects">
-  <div class="section-label">Projects</div>
-  <h2 class="section-title">Ecosystem Projects</h2>
-  <p class="section-desc">Tier 1 are core infrastructure projects. Tier 2 are domain-specific applications built on top.</p>
+<section id="projects" class="sec">
+  <div class="sec-label">// Projects</div>
+  <h2 class="sec-title">All Projects</h2>
 
-  <!-- Tier 1 -->
-  <div class="tier-block">
-    <div class="tier-header">
-      <span class="tier-badge tier1-badge">Tier 1 · Core</span>
-      <span class="tier-title">Foundation Projects</span>
-    </div>
-    <div class="projects-grid">
-
-      <a href="https://github.com/whaletrucker/scutua-mcp" class="project-card" target="_blank">
-        <span class="project-link-icon">↗</span>
-        <div class="project-icon">🔌</div>
-        <div class="project-name">scutua-mcp</div>
-        <div class="project-desc">Core MCP server providing Claude-compatible tools and endpoints for the entire WhaleTrucker ecosystem.</div>
-        <div class="project-tags">
-          <span class="tag">MCP</span><span class="tag">TypeScript</span><span class="tag">Render</span>
-        </div>
-      </a>
-
-      <a href="#" class="project-card" target="_blank">
-        <span class="project-link-icon">↗</span>
-        <div class="project-icon">🔐</div>
-        <div class="project-name">auth-wiki</div>
-        <div class="project-desc">Centralized authentication documentation and integration guides for all ecosystem services.</div>
-        <div class="project-tags">
-          <span class="tag">Auth</span><span class="tag">Docs</span><span class="tag">OAuth</span>
-        </div>
-      </a>
-
-      <a href="https://github.com/whaletrucker/whaletrucker-ecosystem" class="project-card" target="_blank">
-        <span class="project-link-icon">↗</span>
-        <div class="project-icon">🌊</div>
-        <div class="project-name">whaletrucker-ecosystem</div>
-        <div class="project-desc">This hub site — the home base linking all projects, docs, and services together in one ecosystem view.</div>
-        <div class="project-tags">
-          <span class="tag">Hub</span><span class="tag">HTML</span><span class="tag">Cloudflare</span>
-        </div>
-      </a>
-
-    </div>
+  <div class="tier-hd">
+    <span class="tier-pill tp1">✅ Tier 1 · Core</span>
+    <span class="tier-lbl">Foundation — Safe</span>
+  </div>
+  <div class="proj-grid">
+    <a href="https://scutua-mcp.onrender.com/mcp" class="proj-card pt1 reveal" target="_blank">
+      <span class="proj-arrow">↗</span><div class="proj-icon">🔌</div>
+      <div class="proj-name">scutua-mcp</div>
+      <div class="proj-desc">Core MCP server — 157 tools, 8 dimensions. The intelligence backbone of the entire ecosystem.</div>
+      <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">FastMCP</span><span class="ptag">Render</span><span class="ptag">157 tools</span></div>
+    </a>
+    <a href="https://github.com/scutuatua-crypto/github-mcp-server" class="proj-card pt1 reveal" target="_blank">
+      <span class="proj-arrow">↗</span><div class="proj-icon">🐙</div>
+      <div class="proj-name">github-mcp-server</div>
+      <div class="proj-desc">Fork of GitHub's official MCP server. Controls repos, issues, PRs, Actions — all via Claude.</div>
+      <div class="proj-tags"><span class="ptag">Go</span><span class="ptag">Fork</span><span class="ptag">GitHub API</span><span class="ptag">848 commits</span></div>
+    </a>
+    <a href="https://whaletrucker-ecosystem.pages.dev" class="proj-card pt1 reveal" target="_blank">
+      <span class="proj-arrow">↗</span><div class="proj-icon">🌊</div>
+      <div class="proj-name">whaletrucker-ecosystem</div>
+      <div class="proj-desc">This hub — the central home linking every project, tool, and service in the ecosystem.</div>
+      <div class="proj-tags"><span class="ptag">HTML</span><span class="ptag">Cloudflare Pages</span></div>
+    </a>
+    <a href="https://scutuatua-iorbh.wordpress.com" class="proj-card pt1 reveal" target="_blank">
+      <span class="proj-arrow">↗</span><div class="proj-icon">📝</div>
+      <div class="proj-name">Blog</div>
+      <div class="proj-desc">Crypto insights, project updates, and ecosystem news from WhaleTrucker.</div>
+      <div class="proj-tags"><span class="ptag">WordPress</span><span class="ptag">Content</span></div>
+    </a>
+    <a href="https://t.me/scutua01" class="proj-card pt1 reveal" target="_blank">
+      <span class="proj-arrow">↗</span><div class="proj-icon">✈️</div>
+      <div class="proj-name">Telegram</div>
+      <div class="proj-desc">Community hub and live trade alerts. Every execution notified in real-time.</div>
+      <div class="proj-tags"><span class="ptag">Community</span><span class="ptag">Live Alerts</span></div>
+    </a>
+    <a href="https://smithery.ai/servers/scutuatua/scutua-mcp" class="proj-card pt1 reveal" target="_blank">
+      <span class="proj-arrow">↗</span><div class="proj-icon">🏆</div>
+      <div class="proj-name">Smithery Registry</div>
+      <div class="proj-desc">Published on the Smithery MCP registry. Quality score 84/100 — one-click install.</div>
+      <div class="proj-tags"><span class="ptag">Registry</span><span class="ptag">84/100</span></div>
+    </a>
   </div>
 
-  <!-- Tier 2 -->
-  <div class="tier-block">
-    <div class="tier-header">
-      <span class="tier-badge tier2-badge">Tier 2 · Domain</span>
-      <span class="tier-title">Domain Applications</span>
-    </div>
-    <div class="projects-grid">
-
-      <a href="#" class="project-card" target="_blank">
-        <span class="project-link-icon">↗</span>
-        <div class="project-icon">🚛</div>
-        <div class="project-name">fleet-tracker</div>
-        <div class="project-desc">Real-time fleet monitoring and route optimization built on the scutua-mcp platform layer.</div>
-        <div class="project-tags">
-          <span class="tag">Fleet</span><span class="tag">Maps</span><span class="tag">Realtime</span>
-        </div>
-      </a>
-
-      <a href="#" class="project-card" target="_blank">
-        <span class="project-link-icon">↗</span>
-        <div class="project-icon">📊</div>
-        <div class="project-name">logistics-dashboard</div>
-        <div class="project-desc">Analytics and reporting dashboard for cargo movement, delivery metrics, and operational KPIs.</div>
-        <div class="project-tags">
-          <span class="tag">Analytics</span><span class="tag">React</span><span class="tag">Charts</span>
-        </div>
-      </a>
-
-      <a href="#" class="project-card" target="_blank">
-        <span class="project-link-icon">↗</span>
-        <div class="project-icon">🤖</div>
-        <div class="project-name">ai-dispatch</div>
-        <div class="project-desc">Claude-powered dispatch assistant using scutua-mcp tools for intelligent load matching and driver coordination.</div>
-        <div class="project-tags">
-          <span class="tag">AI</span><span class="tag">Claude</span><span class="tag">Dispatch</span>
-        </div>
-      </a>
-
-    </div>
+  <div style="background:rgba(255,209,102,.04);border:1px solid rgba(255,209,102,.15);border-radius:5px;padding:10px 14px;margin-bottom:16px;font-size:10px;color:#8a7040">
+    ⚠️ These projects involve live trading / execution. Always use a dedicated wallet. <strong style="color:var(--yellow)">Never use your main wallet.</strong>
+  </div>
+  <div class="tier-hd">
+    <span class="tier-pill tp2">⚠️ Tier 2 · Execution</span>
+    <span class="tier-lbl">Domain — Use Caution</span>
+  </div>
+  <div class="proj-grid">
+    <a href="#" class="proj-card pt2 reveal">
+      <span class="proj-arrow">↗</span><div class="proj-icon">🐋</div>
+      <div class="proj-name">WhaleTrucker Elite</div>
+      <div class="proj-desc">Bitcoin command center — live price, portfolio valuation, DeFi radar, mission control.</div>
+      <div class="proj-tags"><span class="ptag">BTC</span><span class="ptag">Portfolio</span><span class="ptag">DeFi</span></div>
+    </a>
+    <a href="https://assetflow-app-iota.vercel.app" class="proj-card pt2 reveal" target="_blank">
+      <span class="proj-arrow">↗</span><div class="proj-icon">💼</div>
+      <div class="proj-name">AssetFlow</div>
+      <div class="proj-desc">Asset management and portfolio tracker built on the scutua-mcp platform.</div>
+      <div class="proj-tags"><span class="ptag">Vercel</span><span class="ptag">Portfolio</span></div>
+    </a>
+    <a href="https://asset-platform-iota.vercel.app" class="proj-card pt2 reveal" target="_blank">
+      <span class="proj-arrow">↗</span><div class="proj-icon">📊</div>
+      <div class="proj-name">Asset Platform</div>
+      <div class="proj-desc">Advanced asset tracking and analytics with real-time data from 11 chains.</div>
+      <div class="proj-tags"><span class="ptag">Vercel</span><span class="ptag">Analytics</span></div>
+    </a>
+    <a href="#" class="proj-card pt2 reveal">
+      <span class="proj-arrow">↗</span><div class="proj-icon">🌿</div>
+      <div class="proj-name">WhaleTrucker Reef</div>
+      <div class="proj-desc">DeFi Yield Hunter — finds the best APY for $500 across all supported protocols.</div>
+      <div class="proj-tags"><span class="ptag">DeFi</span><span class="ptag">Yield</span><span class="ptag">APY</span></div>
+    </a>
   </div>
 </section>
+
+<div class="divider"></div>
 
 <!-- CONNECT -->
-<section id="connect">
-  <div class="section-label">Connect</div>
-  <h2 class="section-title">Integration Points</h2>
-  <p class="section-desc">Connect your tools and agents to the WhaleTrucker ecosystem via the scutua-mcp endpoint.</p>
-
+<section id="connect" class="sec">
+  <div class="sec-label">// Connect</div>
+  <h2 class="sec-title">Integrate in Seconds</h2>
+  <p class="sec-desc">Connect any Claude-compatible tool directly to the WhaleTrucker ecosystem.</p>
   <div class="connect-grid">
-
-    <div class="connect-card">
+    <div class="cc reveal">
       <h3>scutua-mcp Endpoint</h3>
-      <p>Connect any Claude-compatible tool or workflow directly to our MCP server for real-time ecosystem access.</p>
-      <div class="endpoint-block">
-        <span class="endpoint-url">https://scutua-mcp.onrender.com/mcp</span>
-        <button class="copy-btn" onclick="copyEndpoint(this, 'https://scutua-mcp.onrender.com/mcp')">Copy</button>
-      </div>
-      <div class="status-row">
-        <div class="status-dot"></div>
-        <span>Server operational</span>
-      </div>
+      <p>Connect Claude, VS Code, Cursor, or any MCP-compatible tool directly to 157 tools.</p>
+      <div class="ep-block"><span class="ep-url">https://scutua-mcp.onrender.com/mcp</span><button class="copy-btn" onclick="cp(this,'https://scutua-mcp.onrender.com/mcp')">Copy</button></div>
+      <div class="st-row"><div class="sdot sg"></div><span>Live · Render · FastMCP 3.3.1</span></div>
     </div>
-
-    <div class="connect-card">
-      <h3>GitHub Repository</h3>
-      <p>All ecosystem code is open and hosted on GitHub. Push to the <code style="color:var(--accent3)">whaletrucker-ecosystem</code> repo to trigger auto-deploy via Cloudflare Pages.</p>
-      <div class="endpoint-block">
-        <span class="endpoint-url">github.com/whaletrucker/whaletrucker-ecosystem</span>
-        <a href="https://github.com" class="copy-btn" target="_blank" style="text-decoration:none">Open →</a>
-      </div>
-      <div class="status-row">
-        <div class="status-dot" style="background:var(--accent2)"></div>
-        <span>Auto-deploy on push</span>
-      </div>
+    <div class="cc reveal">
+      <h3>VS Code / Cursor</h3>
+      <p>Add to your MCP settings file for instant access to all 157 tools.</p>
+      <div class="code-block"><span class="ck">{
+  "mcpServers"</span>: {
+    <span class="ck">"scutua-mcp"</span>: {
+      <span class="ck">"url"</span>: <span class="cu">"https://scutua-mcp.onrender.com/mcp"</span>
+    }
+  }
+}</div>
     </div>
-
+    <div class="cc reveal">
+      <h3>GitHub MCP Hub</h3>
+      <p>Fork of GitHub's official MCP server. Full repo, issue, PR, Actions, and security control.</p>
+      <div class="ep-block"><span class="ep-url">github.com/scutuatua-crypto/github-mcp-server</span><a href="https://github.com/scutuatua-crypto/github-mcp-server" class="copy-btn" target="_blank">Open →</a></div>
+      <div class="st-row"><div class="sdot sb"></div><span>Fork · Go · 848 commits</span></div>
+    </div>
+    <div class="cc reveal">
+      <h3>Smithery Registry</h3>
+      <p>Discover and one-click install via the Smithery MCP registry.</p>
+      <div class="ep-block"><span class="ep-url">smithery.ai/servers/scutuatua/scutua-mcp</span><a href="https://smithery.ai/servers/scutuatua/scutua-mcp" class="copy-btn" target="_blank">Open →</a></div>
+      <div class="st-row"><div class="sdot sv"></div><span>Published · Score 84/100</span></div>
+    </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-logo">WhaleTrucker Ecosystem</div>
-  <div class="footer-copy">Built on GitHub · Deployed on Cloudflare · Powered by Claude</div>
+  <div class="footer-logo">WHALETRUCKER ECOSYSTEM V2</div>
+  <div class="footer-copy">"No Money, No Honey" 🚚 · Built on GitHub · Deployed from iPad 😤 · Powered by Claude 💙</div>
 </footer>
 
 <script>
-  function copyEndpoint(btn, text) {
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = 'Copied!';
-      btn.style.borderColor = 'var(--accent3)';
-      btn.style.color = 'var(--accent3)';
-      setTimeout(() => {
-        btn.textContent = 'Copy';
-        btn.style.borderColor = '';
-        btn.style.color = '';
-      }, 2000);
-    });
-  }
-
-  // Fade-in on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.arch-layer, .project-card, .connect-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s';
-    observer.observe(el);
-  });
+function cp(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';btn.style.borderColor='var(--green)';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='Copy';btn.style.borderColor='';btn.style.color=''},2000)})}
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
+HTMLEOF

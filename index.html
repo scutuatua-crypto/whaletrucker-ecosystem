@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhaleTrucker Ecosystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060a0f;
+    --surface: #0d1520;
+    --surface2: #111d2e;
+    --border: #1e3a5f;
+    --accent: #00d4ff;
+    --accent2: #0066ff;
+    --accent3: #00ff88;
+    --warn: #ff6b35;
+    --text: #e8f4fd;
+    --muted: #5a7fa0;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ─── GRID LINES ─── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 40px;
+    background: rgba(6,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent3); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-badge {
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent);
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── SECTIONS ─── */
+  section { position: relative; z-index: 1; }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 40px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--accent3);
+  }
+
+  .hero-title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: clamp(52px, 8vw, 100px);
+    line-height: 0.95;
+    letter-spacing: -3px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+
+  .hero-title .line1 { color: var(--text); }
+  .hero-title .line2 {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--accent);
+  }
+  .hero-title .accent-word { color: var(--accent); }
+
+  .hero-desc {
+    max-width: 560px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,212,255,0.3);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Animated whale */
+  .hero-visual {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.07;
+    pointer-events: none;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .hero-visual svg { width: 500px; height: 500px; }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s ease 0.4s both;
+  }
+
+  .stat-item {}
+
+  .stat-num {
+    font-family: var(--font-head);
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  /* ─── ARCHITECTURE ─── */
+  #architecture {
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 44px);
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 60px;
+    line-height: 1.8;
+  }
+
+  /* 3-layer diagram */
+  .arch-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .arch-layer {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+    align-items: start;
+    padding: 32px;
+    border: 1px solid var(--border);
+    position: relative;
+    transition: border-color 0.3s;
+    cursor: pointer;
+  }
+
+  .arch-layer:not(:last-child) {
+    border-bottom: none;
+  }
+
+  .arch-layer:first-child { border-radius: 8px 8px 0 0; }
+  .arch-layer:last-child { border-radius: 0 0 8px 8px; }
+
+  .arch-layer:hover {
+    border-color: var(--accent2);
+    background: rgba(0,102,255,0.03);
+  }
+
+  .arch-layer::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .layer-infra::before { background: var(--warn); }
+  .layer-platform::before { background: var(--accent2); }
+  .layer-app::before { background: var(--accent3); }
+
+  .layer-meta {}
+
+  .layer-tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .layer-infra .layer-tag { color: var(--warn); }
+  .layer-platform .layer-tag { color: var(--accent2); }
+  .layer-app .layer-tag { color: var(--accent3); }
+
+  .layer-name {
+    font-family: var(--font-head);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+
+  .layer-count {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .layer-nodes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .node {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 16px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 12px;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .node:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,212,255,0.15);
+  }
+
+  .node .node-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .layer-infra .node .node-dot { background: var(--warn); }
+  .layer-platform .node .node-dot { background: var(--accent2); }
+  .layer-app .node .node-dot { background: var(--accent3); }
+
+  .node-arrow {
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* connector lines */
+  .arch-connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ─── PROJECTS ─── */
+  #projects {
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .tier-block { margin-bottom: 64px; }
+
+  .tier-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .tier-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .tier1-badge {
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent);
+  }
+
+  .tier2-badge {
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    color: var(--accent3);
+  }
+
+  .tier-title {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(0,212,255,0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+
+  .project-card:hover::before { opacity: 1; }
+
+  .project-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+  }
+
+  .project-name {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .project-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .project-link-icon {
+    position: absolute;
+    top: 20px; right: 20px;
+    font-size: 16px;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  .project-card:hover .project-link-icon { color: var(--accent); }
+
+  /* ─── CONNECT ─── */
+  #connect {
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .connect-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 48px;
+  }
+
+  .connect-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+  }
+
+  .connect-card h3 {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .connect-card p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    line-height: 1.8;
+  }
+
+  .endpoint-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .endpoint-url {
+    font-size: 11px;
+    color: var(--accent3);
+    word-break: break-all;
+  }
+
+  .copy-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-logo {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--muted);
+  }
+
+  .footer-copy {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50% { transform: translateY(-52%) translateX(-10px); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links, .nav-badge { display: none; }
+    #hero, #architecture, #projects, #connect { padding-left: 20px; padding-right: 20px; }
+    .hero-visual { display: none; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; }
+    .arch-layer { grid-template-columns: 1fr; }
+    .connect-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Whale<span>Trucker</span></a>
+  <ul class="nav-links">
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+  <div class="nav-badge">v1.0 · Ecosystem</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-eyebrow">WhaleTrucker Ecosystem</div>
+  <h1 class="hero-title">
+    <div class="line1">Move Data</div>
+    <div class="line2">Like a <span class="accent-word" style="-webkit-text-stroke:0">Whale</span></div>
+  </h1>
+  <p class="hero-desc">
+    A unified ecosystem for building, deploying, and connecting intelligent trucking infrastructure. From MCP servers to auth layers — everything linked, everything live.
+  </p>
+  <div class="hero-cta">
+    <a href="#architecture" class="btn-primary">↓ Explore Architecture</a>
+    <a href="#connect" class="btn-ghost">Connect via MCP →</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Arch Layers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Project Tiers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1</div>
+      <div class="stat-label">MCP Endpoint</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Possibilities</div>
+    </div>
+  </div>
+
+  <!-- Decorative whale SVG -->
+  <div class="hero-visual">
+    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M80 280 C80 180 160 100 260 100 C360 100 440 160 450 250 C460 320 410 380 340 400 C300 412 260 405 230 420 C200 435 190 460 160 450 C120 436 100 400 90 370 C82 348 80 314 80 280Z" fill="#00d4ff"/>
+      <path d="M80 280 C60 300 40 320 20 310 C10 305 15 285 30 275 C50 262 70 268 80 280Z" fill="#00d4ff"/>
+      <circle cx="340" cy="180" r="12" fill="#060a0f"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="section-label">Layer Architecture</div>
+  <h2 class="section-title">3-Layer System Design</h2>
+  <p class="section-desc">Each component is interconnected. Click any node to navigate to its documentation or repository.</p>
+
+  <div class="arch-diagram">
+
+    <!-- Layer 1: Application -->
+    <div class="arch-layer layer-app">
+      <div class="layer-meta">
+        <div class="layer-tag">Layer 3</div>
+        <div class="layer-name">Application</div>
+        <div class="layer-count">User-facing interfaces</div>
+      </div>
+      <div class="layer-nodes">
+        <a href="https://whaletrucker-ecosystem.pages.dev" class="node" target="_blank">
+          <span class="node-dot"></span>whaletrucker-ecosystem
+          <span class="node-arrow">↗</span>
+        </a>
+        <a href="#" class="node" target="_blank">
+          <span class="node-dot"></span>auth-wiki
+          <span class="node-arrow">↗</span>
+        </a>
+        <a href="#" class="node" target="_blank">
+          <span class="node-dot"></span>dashboard
+          <span class="node-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Layer 2: Platform -->
+    <div class="arch-layer layer-platform">
+      <div class="layer-meta">
+        <div class="layer-tag">Layer 2</div>
+        <div class="layer-name">Platform</div>
+        <div class="layer-count">Integration & tools</div>
+      </div>
+      <div class="layer-nodes">
+        <a href="https://scutua-mcp.onrender.com/mcp" class="node" target="_blank">
+          <span class="node-dot"></span>scutua-mcp
+          <span class="node-arrow">↗</span>
+        </a>
+        <a href="#" class="node" target="_blank">
+          <span class="node-dot"></span>claude-integration
+          <span class="node-arrow">↗</span>
+        </a>
+        <a href="#" class="node" target="_blank">
+          <span class="node-dot"></span>workflow-engine
+          <span class="node-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Layer 3: Infrastructure -->
+    <div class="arch-layer layer-infra">
+      <div class="layer-meta">
+        <div class="layer-tag">Layer 1</div>
+        <div class="layer-name">Infrastructure</div>
+        <div class="layer-count">Deploy & hosting</div>
+      </div>
+      <div class="layer-nodes">
+        <a href="https://github.com" class="node" target="_blank">
+          <span class="node-dot"></span>GitHub
+          <span class="node-arrow">↗</span>
+        </a>
+        <a href="https://pages.cloudflare.com" class="node" target="_blank">
+          <span class="node-dot"></span>Cloudflare Pages
+          <span class="node-arrow">↗</span>
+        </a>
+        <a href="https://render.com" class="node" target="_blank">
+          <span class="node-dot"></span>Render
+          <span class="node-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Projects</div>
+  <h2 class="section-title">Ecosystem Projects</h2>
+  <p class="section-desc">Tier 1 are core infrastructure projects. Tier 2 are domain-specific applications built on top.</p>
+
+  <!-- Tier 1 -->
+  <div class="tier-block">
+    <div class="tier-header">
+      <span class="tier-badge tier1-badge">Tier 1 · Core</span>
+      <span class="tier-title">Foundation Projects</span>
+    </div>
+    <div class="projects-grid">
+
+      <a href="https://github.com/whaletrucker/scutua-mcp" class="project-card" target="_blank">
+        <span class="project-link-icon">↗</span>
+        <div class="project-icon">🔌</div>
+        <div class="project-name">scutua-mcp</div>
+        <div class="project-desc">Core MCP server providing Claude-compatible tools and endpoints for the entire WhaleTrucker ecosystem.</div>
+        <div class="project-tags">
+          <span class="tag">MCP</span><span class="tag">TypeScript</span><span class="tag">Render</span>
+        </div>
+      </a>
+
+      <a href="#" class="project-card" target="_blank">
+        <span class="project-link-icon">↗</span>
+        <div class="project-icon">🔐</div>
+        <div class="project-name">auth-wiki</div>
+        <div class="project-desc">Centralized authentication documentation and integration guides for all ecosystem services.</div>
+        <div class="project-tags">
+          <span class="tag">Auth</span><span class="tag">Docs</span><span class="tag">OAuth</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/whaletrucker/whaletrucker-ecosystem" class="project-card" target="_blank">
+        <span class="project-link-icon">↗</span>
+        <div class="project-icon">🌊</div>
+        <div class="project-name">whaletrucker-ecosystem</div>
+        <div class="project-desc">This hub site — the home base linking all projects, docs, and services together in one ecosystem view.</div>
+        <div class="project-tags">
+          <span class="tag">Hub</span><span class="tag">HTML</span><span class="tag">Cloudflare</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Tier 2 -->
+  <div class="tier-block">
+    <div class="tier-header">
+      <span class="tier-badge tier2-badge">Tier 2 · Domain</span>
+      <span class="tier-title">Domain Applications</span>
+    </div>
+    <div class="projects-grid">
+
+      <a href="#" class="project-card" target="_blank">
+        <span class="project-link-icon">↗</span>
+        <div class="project-icon">🚛</div>
+        <div class="project-name">fleet-tracker</div>
+        <div class="project-desc">Real-time fleet monitoring and route optimization built on the scutua-mcp platform layer.</div>
+        <div class="project-tags">
+          <span class="tag">Fleet</span><span class="tag">Maps</span><span class="tag">Realtime</span>
+        </div>
+      </a>
+
+      <a href="#" class="project-card" target="_blank">
+        <span class="project-link-icon">↗</span>
+        <div class="project-icon">📊</div>
+        <div class="project-name">logistics-dashboard</div>
+        <div class="project-desc">Analytics and reporting dashboard for cargo movement, delivery metrics, and operational KPIs.</div>
+        <div class="project-tags">
+          <span class="tag">Analytics</span><span class="tag">React</span><span class="tag">Charts</span>
+        </div>
+      </a>
+
+      <a href="#" class="project-card" target="_blank">
+        <span class="project-link-icon">↗</span>
+        <div class="project-icon">🤖</div>
+        <div class="project-name">ai-dispatch</div>
+        <div class="project-desc">Claude-powered dispatch assistant using scutua-mcp tools for intelligent load matching and driver coordination.</div>
+        <div class="project-tags">
+          <span class="tag">AI</span><span class="tag">Claude</span><span class="tag">Dispatch</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section id="connect">
+  <div class="section-label">Connect</div>
+  <h2 class="section-title">Integration Points</h2>
+  <p class="section-desc">Connect your tools and agents to the WhaleTrucker ecosystem via the scutua-mcp endpoint.</p>
+
+  <div class="connect-grid">
+
+    <div class="connect-card">
+      <h3>scutua-mcp Endpoint</h3>
+      <p>Connect any Claude-compatible tool or workflow directly to our MCP server for real-time ecosystem access.</p>
+      <div class="endpoint-block">
+        <span class="endpoint-url">https://scutua-mcp.onrender.com/mcp</span>
+        <button class="copy-btn" onclick="copyEndpoint(this, 'https://scutua-mcp.onrender.com/mcp')">Copy</button>
+      </div>
+      <div class="status-row">
+        <div class="status-dot"></div>
+        <span>Server operational</span>
+      </div>
+    </div>
+
+    <div class="connect-card">
+      <h3>GitHub Repository</h3>
+      <p>All ecosystem code is open and hosted on GitHub. Push to the <code style="color:var(--accent3)">whaletrucker-ecosystem</code> repo to trigger auto-deploy via Cloudflare Pages.</p>
+      <div class="endpoint-block">
+        <span class="endpoint-url">github.com/whaletrucker/whaletrucker-ecosystem</span>
+        <a href="https://github.com" class="copy-btn" target="_blank" style="text-decoration:none">Open →</a>
+      </div>
+      <div class="status-row">
+        <div class="status-dot" style="background:var(--accent2)"></div>
+        <span>Auto-deploy on push</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">WhaleTrucker Ecosystem</div>
+  <div class="footer-copy">Built on GitHub · Deployed on Cloudflare · Powered by Claude</div>
+</footer>
+
+<script>
+  function copyEndpoint(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.style.borderColor = 'var(--accent3)';
+      btn.style.color = 'var(--accent3)';
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.style.borderColor = '';
+        btn.style.color = '';
+      }, 2000);
+    });
+  }
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.arch-layer, .project-card, .connect-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

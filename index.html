@@ -140,8 +140,6 @@ nav {
 }
 
 .status-dot.live { background: var(--success); }
-.status-dot.idle { background: var(--warning); }
-.status-dot.down { background: var(--danger); }
 
 /* HERO SECTION */
 #hero {
@@ -322,7 +320,7 @@ nav {
 .change-up { background: rgba(0, 212, 170, 0.1); color: var(--success); }
 .change-dn { background: rgba(255, 77, 109, 0.1); color: var(--danger); }
 
-/* ARCHITECTURE SECTION */
+/* SECTIONS */
 .section {
   position: relative;
   z-index: 5;
@@ -452,12 +450,10 @@ nav {
   height: 6px;
   border-radius: 50%;
   animation: pulse 2s ease-in-out infinite;
+  background: var(--success);
 }
 
-.dot.online { background: var(--success); }
-.dot.offline { background: var(--danger); }
-
-/* INTEGRATION FLOW */
+/* FLOW DIAGRAM */
 .flow-diagram {
   display: grid;
   grid-template-columns: 1fr auto 1fr auto 1fr;
@@ -498,7 +494,7 @@ nav {
   text-align: center;
 }
 
-/* PROJECTS SECTION */
+/* PROJECTS */
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -572,7 +568,7 @@ nav {
 
 .project-card:hover .project-arrow { color: var(--accent); }
 
-/* CONNECT SECTION */
+/* CONNECT */
 .connect-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -703,17 +699,6 @@ footer {
   to { transform: translateX(-50%); }
 }
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .fade-in {
   opacity: 0;
   transform: translateY(16px);
@@ -729,7 +714,7 @@ footer {
 @media (max-width: 768px) {
   nav { padding: 0 16px; }
   .nav-menu, .nav-status { display: none; }
-  .section, #hero, #live { padding-left: 20px; padding-right: 20px; }
+  .section, #hero { padding-left: 20px; padding-right: 20px; }
   .ecosystem-grid { grid-template-columns: 1fr; }
   .flow-diagram { grid-template-columns: 1fr; gap: 12px; }
   .flow-arrow { display: none; }
@@ -764,13 +749,10 @@ footer {
       <span class="status-dot live"></span>
       <span>github-mcp: Online</span>
     </div>
-    <div class="status-indicator">
-      <span id="ecosystem-status">—</span>
-    </div>
   </div>
 </nav>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <section id="hero">
   <div class="hero-badge">WhaleTrucker Ecosystem V2 — Self-Aware · Agentic · Decentralized</div>
   <h1 class="hero-title">
@@ -789,36 +771,34 @@ footer {
   </div>
   <div class="hero-stats">
     <div class="stat-item">
-      <div class="stat-value" id="stat-tools">157</div>
+      <div class="stat-value">157</div>
       <div class="stat-label">MCP Tools</div>
     </div>
     <div class="stat-item">
-      <div class="stat-value" id="stat-dims">8</div>
+      <div class="stat-value">8</div>
       <div class="stat-label">Dimensions</div>
     </div>
     <div class="stat-item">
-      <div class="stat-value" id="stat-chains">11</div>
+      <div class="stat-value">11</div>
       <div class="stat-label">Blockchains</div>
     </div>
     <div class="stat-item">
-      <div class="stat-value" id="stat-repos">82</div>
+      <div class="stat-value">82</div>
       <div class="stat-label">Projects</div>
     </div>
     <div class="stat-item">
       <div class="stat-value">$0</div>
-      <div class="stat-label">Infrastructure Cost</div>
+      <div class="stat-label">Cost</div>
     </div>
   </div>
 </section>
 
 <!-- TICKER -->
 <div id="ticker">
-  <div class="ticker-scroll" id="ticker-scroll">
-    <!-- populated by JS -->
-  </div>
+  <div class="ticker-scroll" id="ticker-scroll"></div>
 </div>
 
-<!-- ECOSYSTEM SECTION -->
+<!-- ECOSYSTEM -->
 <div class="divider"></div>
 <section id="ecosystem" class="section fade-in">
   <div class="section-header">
@@ -827,70 +807,61 @@ footer {
   </div>
   
   <div class="ecosystem-grid">
-    <!-- scutua-mcp card -->
     <div class="ecosystem-card">
       <div class="card-icon">🔌</div>
       <div class="card-label">Dimension 1–8</div>
       <div class="card-title">scutua-mcp</div>
-      <div class="card-desc">
-        157 DeFi tools across 8 dimensions. Multi-chain analytics, whale tracking, swap execution, ecosystem consciousness.
-      </div>
+      <div class="card-desc">157 DeFi tools across 8 dimensions. Multi-chain analytics, whale tracking, swap execution.</div>
       <div class="card-stats">
         <span class="stat-badge">Python · FastMCP</span>
         <span class="stat-badge">Render.com</span>
         <span class="stat-badge">157 Tools</span>
       </div>
       <div class="card-status">
-        <span class="dot online"></span>
+        <span class="dot"></span>
         <span>Live · FastMCP 3.3.1</span>
       </div>
     </div>
 
-    <!-- github-mcp-server card -->
     <div class="ecosystem-card">
       <div class="card-icon">🐙</div>
       <div class="card-label">Control Layer</div>
       <div class="card-title">github-mcp-server</div>
-      <div class="card-desc">
-        Fork of GitHub's official MCP. Full repo, issues, PRs, Actions, security control via Claude AI.
-      </div>
+      <div class="card-desc">Fork of GitHub's official MCP. Full repo, issues, PRs, Actions control via Claude.</div>
       <div class="card-stats">
         <span class="stat-badge">Go · Fork</span>
         <span class="stat-badge">848 commits</span>
-        <span class="stat-badge">TypeScript Wrapper</span>
+        <span class="stat-badge">TypeScript</span>
       </div>
       <div class="card-status">
-        <span class="dot online"></span>
+        <span class="dot"></span>
         <span>GitHub API Connected</span>
       </div>
     </div>
 
-    <!-- whaletrucker-ecosystem card -->
     <div class="ecosystem-card">
       <div class="card-icon">🌊</div>
       <div class="card-label">Central Hub</div>
       <div class="card-title">whaletrucker-ecosystem</div>
-      <div class="card-desc">
-        Master hub linking all projects, services, and integrations. Real-time status monitoring and unified navigation.
-      </div>
+      <div class="card-desc">Master hub linking all projects. Real-time monitoring and unified navigation.</div>
       <div class="card-stats">
         <span class="stat-badge">HTML5 · CSS3</span>
         <span class="stat-badge">Cloudflare Pages</span>
-        <span class="stat-badge">Real-time Dashboard</span>
+        <span class="stat-badge">Real-time</span>
       </div>
       <div class="card-status">
-        <span class="dot online"></span>
+        <span class="dot"></span>
         <span>Live · Auto-deployed</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ARCHITECTURE FLOW -->
+<!-- ARCHITECTURE -->
 <div class="divider"></div>
 <section id="architecture" class="section fade-in">
   <div class="section-header">
-    <span class="section-label">// Integration Architecture</span>
+    <span class="section-label">// Architecture</span>
     <div class="section-line"></div>
   </div>
 
@@ -902,26 +873,21 @@ footer {
     <div class="flow-arrow">→</div>
     <div class="flow-box">
       <div class="flow-box-label">Layer 2</div>
-      <div class="flow-box-title">DeFi Intelligence</div>
+      <div class="flow-box-title">Intelligence</div>
     </div>
     <div class="flow-arrow">→</div>
     <div class="flow-box">
       <div class="flow-box-label">Layer 3</div>
-      <div class="flow-box-title">Execution & Control</div>
+      <div class="flow-box-title">Execution</div>
     </div>
   </div>
-
-  <p style="font-size: 11px; color: var(--text-secondary); margin: 24px 0; text-align: center; line-height: 1.8;">
-    <b style="color: var(--accent);">Data Flow:</b> CoinGecko · DeFiLlama · Birdeye · Whale Analytics → Sentiment Analysis · Portfolio Tracking → Swap Execution · DCA · Stop Loss<br>
-    <b style="color: var(--accent);">Control Flow:</b> GitHub Issues/PRs → Claude Decision Engine → scutua-mcp Actions → Telegram Alerts → Ecosystem Consciousness
-  </p>
 </section>
 
-<!-- PROJECTS SECTION -->
+<!-- PROJECTS -->
 <div class="divider"></div>
 <section id="projects" class="section fade-in">
   <div class="section-header">
-    <span class="section-label">// Projects & Dashboards</span>
+    <span class="section-label">// Projects</span>
     <div class="section-line"></div>
   </div>
 
@@ -930,7 +896,7 @@ footer {
       <span class="project-arrow">↗</span>
       <div class="project-icon">🔌</div>
       <div class="project-name">scutua-mcp Live</div>
-      <div class="project-desc">Direct MCP endpoint. 157 tools, 8 dimensions, real-time Render deployment.</div>
+      <div class="project-desc">Direct MCP endpoint. 157 tools, Render deployment.</div>
       <div class="project-meta"><span>Python · FastMCP · Render</span></div>
     </a>
 
@@ -938,7 +904,7 @@ footer {
       <span class="project-arrow">↗</span>
       <div class="project-icon">🐙</div>
       <div class="project-name">GitHub MCP Server</div>
-      <div class="project-desc">Full GitHub API control. Repos, issues, PRs, Actions via Claude AI.</div>
+      <div class="project-desc">Full GitHub API control via Claude AI.</div>
       <div class="project-meta"><span>Go · Fork · 848 commits</span></div>
     </a>
 
@@ -946,15 +912,15 @@ footer {
       <span class="project-arrow">↗</span>
       <div class="project-icon">🏆</div>
       <div class="project-name">Smithery Registry</div>
-      <div class="project-desc">Official MCP registry. Quality score 84/100. One-click installation.</div>
-      <div class="project-meta"><span>Registry · 84/100 Score</span></div>
+      <div class="project-desc">One-click installation. Score 84/100.</div>
+      <div class="project-meta"><span>Registry · 84/100</span></div>
     </a>
 
     <a href="https://scutuatua-crypto.github.io/whaletrucker-reef/" class="project-card" target="_blank">
       <span class="project-arrow">↗</span>
       <div class="project-icon">🌿</div>
       <div class="project-name">WhaleTrucker Reef</div>
-      <div class="project-desc">DeFi yield hunter. Finds best APY across all protocols for any capital.</div>
+      <div class="project-desc">DeFi yield hunter. Best APY finder.</div>
       <div class="project-meta"><span>DeFi · Yield · APY</span></div>
     </a>
 
@@ -962,7 +928,7 @@ footer {
       <span class="project-arrow">↗</span>
       <div class="project-icon">💼</div>
       <div class="project-name">AssetFlow</div>
-      <div class="project-desc">Portfolio tracker built on scutua-mcp. Real-time asset management.</div>
+      <div class="project-desc">Portfolio tracker built on scutua-mcp.</div>
       <div class="project-meta"><span>Vercel · Portfolio</span></div>
     </a>
 
@@ -970,37 +936,37 @@ footer {
       <span class="project-arrow">↗</span>
       <div class="project-icon">📊</div>
       <div class="project-name">Asset Platform</div>
-      <div class="project-desc">Advanced analytics with real-time data from 11 blockchains.</div>
-      <div class="project-meta"><span>Vercel · Analytics · 11 Chains</span></div>
+      <div class="project-desc">Analytics with 11-chain data.</div>
+      <div class="project-meta"><span>Vercel · Analytics</span></div>
     </a>
   </div>
 </section>
 
-<!-- CONNECT SECTION -->
+<!-- CONNECT -->
 <div class="divider"></div>
 <section id="connect" class="section fade-in">
   <div class="section-header">
-    <span class="section-label">// Connect & Integrate</span>
+    <span class="section-label">// Connect</span>
     <div class="section-line"></div>
   </div>
 
   <div class="connect-grid">
     <div class="connect-card">
       <div class="connect-title">scutua-mcp Endpoint</div>
-      <div class="connect-desc">Connect Claude, VS Code, Cursor, or any MCP-compatible tool to 157 DeFi tools.</div>
+      <div class="connect-desc">Connect any MCP client to 157 DeFi tools.</div>
       <div class="endpoint">
         <span class="endpoint-url">https://scutua-mcp.onrender.com/mcp</span>
-        <button class="copy-btn" onclick="copyToClipboard(this, 'https://scutua-mcp.onrender.com/mcp')">Copy</button>
+        <button class="copy-btn" onclick="copyURL(this,'https://scutua-mcp.onrender.com/mcp')">Copy</button>
       </div>
       <div class="status-row">
-        <span class="dot online"></span>
-        <span>Live · Render · FastMCP 3.3.1</span>
+        <span class="status-dot live"></span>
+        <span>Live · FastMCP 3.3.1</span>
       </div>
     </div>
 
     <div class="connect-card">
       <div class="connect-title">VS Code / Cursor Config</div>
-      <div class="connect-desc">Add to your MCP settings for instant access to all 157 tools.</div>
+      <div class="connect-desc">Add to MCP settings for instant access.</div>
       <div class="code-block">{
   "mcpServers": {
     "scutua-mcp": {
@@ -1012,27 +978,27 @@ footer {
 
     <div class="connect-card">
       <div class="connect-title">GitHub MCP Hub</div>
-      <div class="connect-desc">Fork of GitHub's official MCP. Full repo, issue, PR and Actions control.</div>
+      <div class="connect-desc">Fork of GitHub's official MCP.</div>
       <div class="endpoint">
         <span class="endpoint-url">github.com/scutuatua-crypto/github-mcp-server</span>
         <a href="https://github.com/scutuatua-crypto/github-mcp-server" class="copy-btn" target="_blank">Open →</a>
       </div>
       <div class="status-row">
-        <span class="dot online"></span>
+        <span class="status-dot live"></span>
         <span>Fork · Go · 848 commits</span>
       </div>
     </div>
 
     <div class="connect-card">
       <div class="connect-title">Smithery Registry</div>
-      <div class="connect-desc">Discover and one-click install via the official Smithery MCP registry.</div>
+      <div class="connect-desc">Official registry. One-click install.</div>
       <div class="endpoint">
         <span class="endpoint-url">smithery.ai/servers/scutuatua/scutua-mcp</span>
         <a href="https://smithery.ai/servers/scutuatua/scutua-mcp" class="copy-btn" target="_blank">Open →</a>
       </div>
       <div class="status-row">
-        <span class="dot online"></span>
-        <span>Published · Score 84/100</span>
+        <span class="status-dot live"></span>
+        <span>Published · 84/100</span>
       </div>
     </div>
   </div>
@@ -1040,14 +1006,12 @@ footer {
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-id">WT_ECOSYSTEM_V2 · github-mcp-server + scutua-mcp + whaletrucker-ecosystem</div>
-  <div class="footer-copy">"no money · no cry · just build" 🚚 · Powered by Claude 💙 · iPad only</div>
+  <div class="footer-id">WT_ECOSYSTEM_V2 · github-mcp-server + scutua-mcp</div>
+  <div class="footer-copy">"no money · no cry · just build" 🚚 · Powered by Claude 💙</div>
 </footer>
 
 <script>
-// ──────────────────────────────────────────────────────────
-// LIVE TICKER - Fetch crypto prices from CoinGecko
-// ──────────────────────────────────────────────────────────
+// CRYPTO PRICES
 const COINS = [
   { id: 'bitcoin', sym: 'BTC' },
   { id: 'ethereum', sym: 'ETH' },
@@ -1071,9 +1035,7 @@ async function fetchPrices() {
     const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
     const data = await res.json();
     renderTicker(data);
-  } catch (e) {
-    console.log('Price fetch failed:', e);
-  }
+  } catch (e) {}
 }
 
 function renderTicker(data) {
@@ -1081,79 +1043,31 @@ function renderTicker(data) {
   const items = COINS.map(c => {
     const price = data[c.id];
     if (!price) return '';
-    const p = price.usd;
-    const chg = price.usd_24h_change || 0;
-    const up = chg >= 0;
-    return `
-      <div class="ticker-item">
-        <span class="ticker-symbol">${c.sym}</span>
-        <span class="ticker-price">${fmt(p)}</span>
-        <span class="ticker-change ${up ? 'change-up' : 'change-dn'}">
-          ${up ? '▲' : '▼'} ${Math.abs(chg).toFixed(2)}%
-        </span>
-      </div>
-    `;
+    const p = price.usd, chg = price.usd_24h_change || 0, up = chg >= 0;
+    return `<div class="ticker-item"><span class="ticker-symbol">${c.sym}</span><span class="ticker-price">${fmt(p)}</span><span class="ticker-change ${up ? 'change-up' : 'change-dn'}">${up ? '▲' : '▼'} ${Math.abs(chg).toFixed(2)}%</span></div>`;
   }).join('');
-  scroll.innerHTML = items + items; // duplicate for seamless loop
+  scroll.innerHTML = items + items;
 }
 
 fetchPrices();
 setInterval(fetchPrices, 60000);
 
-// ──────────────────────────────────────────────────────────
-// SCROLL REVEAL ANIMATION
-// ──────────────────────────────────────────────────────────
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
+// SCROLL REVEAL
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.06 });
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 
-// ──────────────────────────────────────────────────────────
-// COPY TO CLIPBOARD
-// ──────────────────────────────────────────────────────────
-function copyToClipboard(btn, text) {
-  navigator.clipboard.writeText(text).then(() => {
+// COPY URL
+function copyURL(btn, url) {
+  navigator.clipboard.writeText(url).then(() => {
     const orig = btn.textContent;
     btn.textContent = 'Copied!';
-    btn.style.borderColor = 'var(--accent)';
     btn.style.color = 'var(--accent)';
-    setTimeout(() => {
-      btn.textContent = orig;
-      btn.style.borderColor = '';
-      btn.style.color = '';
-    }, 2000);
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
   });
 }
-
-// ──────────────────────────────────────────────────────────
-// ECOSYSTEM STATUS CHECK
-// ──────────────────────────────────────────────────────────
-async function checkEcosystemStatus() {
-  try {
-    // Check scutua-mcp
-    const scutua = await fetch('https://scutua-mcp.onrender.com/mcp', { method: 'POST' })
-      .then(r => r.ok)
-      .catch(() => false);
-    
-    // Update nav status
-    const statusEl = document.getElementById('ecosystem-status');
-    if (statusEl) {
-      statusEl.innerHTML = scutua ? 
-        '<span class="status-dot live"></span><span>Ecosystem: Healthy</span>' :
-        '<span class="status-dot idle"></span><span>Ecosystem: Checking</span>';
-    }
-  } catch (e) {
-    console.log('Status check error:', e);
-  }
-}
-
-checkEcosystemStatus();
-setInterval(checkEcosystemStatus, 30000);
 </script>
 
 </body>

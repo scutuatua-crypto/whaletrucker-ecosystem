@@ -1,0 +1,7 @@
+{
+  "services": {
+    "scutua-mcp": { "url": "...", "health": "..." },
+    "github-mcp-server": { "url": "...", "status": "..." },
+    "whaletrucker-ecosystem": { "url": "...", "version": "..." }
+  }
+}

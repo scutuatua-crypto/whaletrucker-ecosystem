@@ -1,0 +1,27 @@
+name: Refresh Ecosystem Data
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # รันทุกเที่ยงคืน
+  workflow_dispatch: # รันเองได้ด้วยปุ่มกด
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch Repos Data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # ใช้ GitHub CLI ดึงข้อมูล Repo ทั้งหมดใน Org
+          gh repo list scutuatua-crypto --limit 100 --json name,description,updatedAt,url > repo-data.json
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add repo-data.json
+          git commit -m "Update ecosystem repo data" || exit 0
+          git push

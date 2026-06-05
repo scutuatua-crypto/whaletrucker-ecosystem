@@ -1010,7 +1010,7 @@ footer {
       <div class="stat-label">Blockchains</div>
     </div>
     <div class="stat-block">
-      <div class="stat-number">6</div>
+      <div class="stat-number" id="stat-active-projects">6</div>
       <div class="stat-label">Active Projects</div>
     </div>
   </div>
@@ -1235,6 +1235,7 @@ footer {
   <div class="section-header">
     <span class="section-label">// Project Ecosystem</span>
     <div class="section-line"></div>
+    <!-- ── [AUTO] synced badge จะถูก inject ตรงนี้โดย loadRepoData() ── -->
   </div>
 
   <div class="projects-grid">
@@ -1455,6 +1456,63 @@ async function checkEcosystemHealth() {
 
 checkEcosystemHealth();
 setInterval(checkEcosystemHealth, 300000);
+
+// ── Repo Data Loader ── อ่านจาก repo-data.json ที่ GitHub Actions generate ──
+async function loadRepoData() {
+  try {
+    const res = await fetch('repo-data.json?t=' + Date.now()); // cache-bust
+    if (!res.ok) return; // ไฟล์ยังไม่มี → ของเดิมแสดงปกติ 100%
+
+    const repos = await res.json();
+    if (!Array.isArray(repos) || repos.length === 0) return;
+
+    // 1) แสดง "synced" badge ใต้ section header
+    const header = document.querySelector('#projects .section-header');
+    if (header) {
+      const badge = document.createElement('span');
+      badge.style.cssText = 'font-size:9px;color:var(--text-muted);letter-spacing:0.1em;white-space:nowrap;';
+      const today = new Date().toLocaleDateString('en', { month: 'short', day: 'numeric' });
+      badge.textContent = '⟳ synced ' + today;
+      header.appendChild(badge);
+    }
+
+    // 2) อัปเดต stat "Active Projects" ใน hero
+    const statEl = document.getElementById('stat-active-projects');
+    if (statEl) statEl.textContent = repos.length;
+
+    // 3) inject repo card ใหม่ที่ยังไม่มีใน grid เดิม
+    const grid = document.querySelector('.projects-grid');
+    if (!grid) return;
+
+    const existingNames = [...grid.querySelectorAll('.project-name')]
+      .map(el => el.textContent.trim().toLowerCase());
+
+    const newCards = repos
+      .filter(r => !existingNames.includes(r.name.toLowerCase()))
+      .slice(0, 12) // cap ไว้ที่ 12 card เพิ่ม
+      .map(r => {
+        const updated = r.updatedAt
+          ? new Date(r.updatedAt).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })
+          : '';
+        const desc = (r.description || 'No description provided.').slice(0, 100);
+        return `
+          <a href="${r.url}" class="project-card" target="_blank">
+            <div class="project-icon">📦</div>
+            <div class="project-name">${r.name}</div>
+            <div class="project-desc">${desc}</div>
+            <div class="project-meta">GitHub${updated ? ' · Updated ' + updated : ''}</div>
+          </a>`;
+      }).join('');
+
+    if (newCards) grid.insertAdjacentHTML('beforeend', newCards);
+
+  } catch (e) {
+    // silent fail — ของเดิมยังแสดงปกติ ไม่ error ไม่แตะอะไร
+  }
+}
+
+loadRepoData();
+// ── End Repo Data Loader ──────────────────────────────────────────────
 </script>
 
 </body>
